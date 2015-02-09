@@ -1,0 +1,74 @@
+﻿<Page
+    x:Class="Calculator.CalculatorPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Calculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <!--声明整体布局，将大小按1:1:4来分割-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition ></ColumnDefinition>
+            <ColumnDefinition ></ColumnDefinition>
+            <ColumnDefinition ></ColumnDefinition>
+            <ColumnDefinition ></ColumnDefinition>
+            <ColumnDefinition ></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <!--文本块标题和结果 -->
+        <TextBlock x:Name="TitleBlock" Grid.Row="0" Grid.ColumnSpan="5" Text="计算器" Margin="0,40,0,0" FontSize="40"></TextBlock>
+
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="5">
+            <TextBlock x:Name="ProgressTextBlock" Height="30" FontSize="20" TextAlignment="Right" ></TextBlock>
+            <TextBlock x:Name="ResultTextBlock"  Height="80" FontSize="80" TextAlignment="Right" >0</TextBlock>
+        </StackPanel>
+
+        <!--按钮块 切分成5*5块-->
+        <!--第一行-->
+        <Button x:Name="ButtonDel" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="←" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="150" BorderThickness="0" Background="#FF346151" Margin="5,0.333,5,0.5"></Button>
+        <Button x:Name="ButtonClear" Grid.Row="2" Grid.Column="2"  Content="C" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF346151" Click="ButtonClear_Click"></Button>
+        <Button x:Name="ButtonPosiNege" Grid.Row="2" Grid.Column="3"  Content="±" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF346151" Click="ButtonPosiNege_Click"></Button>
+        <Button x:Name="ButtonRoot" Grid.Row="2" Grid.Column="4"  Content="√" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF346151" Click="ButtonRoot_Click"></Button>
+
+        <!--第二行-->
+        <Button x:Name="Button7" Grid.Row="3" Grid.Column="0"  Content="7" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF1A4738" Click="Button7_Click"></Button>
+        <Button x:Name="Button8" Grid.Row="3" Grid.Column="1"  Content="8" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF05110D" Click="Button8_Click"></Button>
+        <Button x:Name="Button9" Grid.Row="3" Grid.Column="2"  Content="9" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF05110D" Click="Button9_Click"></Button>
+        <Button x:Name="ButtonDivide" Grid.Row="3" Grid.Column="3"  Content="/" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF346151" Click="ButtonDivide_Click"></Button>
+        <Button x:Name="ButtonMod" Grid.Row="3" Grid.Column="4"  Content="%" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF346151" Click="ButtonMod_Click"></Button>
+
+
+        <!--第三行-->
+        <Button x:Name="Button4" Grid.Row="4" Grid.Column="0"  Content="4" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF05110D" Click="Button4_Click"></Button>
+        <Button x:Name="Button5" Grid.Row="4" Grid.Column="1"  Content="5" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF05110D" Click="Button5_Click"></Button>
+        <Button x:Name="Button6" Grid.Row="4" Grid.Column="2"  Content="6" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF05110D" Click="Button6_Click"></Button>
+        <Button x:Name="ButtonMultiply" Grid.Row="4" Grid.Column="3"  Content="*" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF346151" Click="ButtonMultiply_Click"></Button>
+        <Button x:Name="ButtonFraction" Grid.Row="4" Grid.Column="4"  Content="1/x" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF346151" Click="ButtonFraction_Click"></Button>
+
+        <!--第四行-->
+        <Button x:Name="Button1" Grid.Row="5" Grid.Column="0"  Content="1" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF05110D" Click="Button1_Click"></Button>
+        <Button x:Name="Button2" Grid.Row="5" Grid.Column="1"  Content="2" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF05110D" Click="Button2_Click"></Button>
+        <Button x:Name="Button3" Grid.Row="5" Grid.Column="2"  Content="3" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF05110D" Click="Button3_Click"></Button>
+        <Button x:Name="ButtonMinus" Grid.Row="5" Grid.Column="3"  Content="-" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF346151" Click="ButtonMinus_Click"></Button>
+        <Button x:Name="ButtonEqual" Grid.Row="5" Grid.Column="4" Grid.RowSpan="2" FontSize="50" Content="=" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="142" Width="70" BorderThickness="0" Background="{Binding Source={ThemeResource ButtonPressedBackgroundThemeBrush}}" Margin="6,0.194,4,1"/>
+
+        <!--第五行-->
+        <Button x:Name="Button0" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="0" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="150" BorderThickness="0" Background="#FF05110D" Margin="5,0.667,5,1" Click="Button0_Click"></Button>
+        <Button x:Name="ButtonPoint" Grid.Row="6" Grid.Column="2"  Content="." HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF05110D" Click="ButtonPoint_Click"></Button>
+        <Button x:Name="ButtonPlus" Grid.Row="6" Grid.Column="3"  Content="+" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF346151" Click="ButtonPlus_Click"></Button>
+
+    </Grid>
+</Page>
