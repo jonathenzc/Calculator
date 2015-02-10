@@ -5,11 +5,38 @@
     xmlns:local="using:Calculator"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+    mc:Ignorable="d" 
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <!--设计按钮样式-->
+    <Page.Resources>
+        <!--操作数按钮样式-->
+        <Style TargetType="Button" x:Key="OperNumButton">
+            <Setter Property="Height" Value="Auto"></Setter>
+            <Setter Property="Width" Value="Auto"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+            <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="MinHeight" Value="20"></Setter>
+            <Setter Property="MinWidth" Value="20"></Setter>
+            <Setter Property="Background" Value="{ThemeResource PhoneLowBrush}"></Setter>
+        </Style>
+
+        <!--操作符按钮样式-->
+        <Style TargetType="Button" x:Key="OperSymbolButton">
+            <Setter Property="Height" Value="Auto"></Setter>
+            <Setter Property="Width" Value="Auto"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+            <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="MinHeight" Value="20"></Setter>
+            <Setter Property="MinWidth" Value="20"></Setter>
+            <Setter Property="Background" Value="{ThemeResource PhoneChromeBrush}"></Setter>
+        </Style>
+    </Page.Resources>
+
     <Grid>
-        <!--声明整体布局，将大小按1:1:4来分割-->
+        <!--声明整体布局，行的大小按2:2:1:1:1:1:1来分割。列的大小按1:1:1:1:1来分割，其中每列添加0.1的分割距离-->
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"></RowDefinition>
             <RowDefinition Height="2*"></RowDefinition>
@@ -21,54 +48,59 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition ></ColumnDefinition>
-            <ColumnDefinition ></ColumnDefinition>
-            <ColumnDefinition ></ColumnDefinition>
-            <ColumnDefinition ></ColumnDefinition>
-            <ColumnDefinition ></ColumnDefinition>
+            <ColumnDefinition Width="0.1*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.1*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.1*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.1*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.1*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <!--文本块标题和结果 -->
-        <TextBlock x:Name="TitleBlock" Grid.Row="0" Grid.ColumnSpan="5" Text="计算器" Margin="0,40,0,0" FontSize="40"></TextBlock>
+        <TextBlock x:Name="TitleBlock" Grid.Row="0" Grid.ColumnSpan="11" Text="计算器" Margin="0,40,0,0" FontSize="40"></TextBlock>
 
-        <StackPanel Grid.Row="1" Grid.ColumnSpan="5">
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="11">
             <TextBlock x:Name="ProgressTextBlock" Height="30" FontSize="20" TextAlignment="Right" ></TextBlock>
             <TextBlock x:Name="ResultTextBlock"  Height="80" FontSize="80" TextAlignment="Right" >0</TextBlock>
         </StackPanel>
 
         <!--按钮块 切分成5*5块-->
         <!--第一行-->
-        <Button x:Name="ButtonDel" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="←" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="150" BorderThickness="0" Background="#FF1F1F1F" Margin="5,0.333,5,0.5"></Button>
-        <Button x:Name="ButtonClear" Grid.Row="2" Grid.Column="2"  Content="C" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF1F1F1F" Click="ButtonClear_Click"></Button>
-        <Button x:Name="ButtonPosiNege" Grid.Row="2" Grid.Column="3"  Content="±" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF1F1F1F" Click="ButtonPosiNege_Click"></Button>
-        <Button x:Name="ButtonRoot" Grid.Row="2" Grid.Column="4"  Content="√" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF1F1F1F" Click="ButtonRoot_Click"></Button>
+        <Button x:Name="ButtonDel" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Content="←" Style="{StaticResource OperNumButton}" FontSize="30"></Button>
+        <Button x:Name="ButtonClear" Grid.Row="2" Grid.Column="5"  Content="C"  Style="{StaticResource OperNumButton}" Click="ButtonClear_Click"></Button>
+        <Button x:Name="ButtonPosiNege" Grid.Row="2" Grid.Column="7"  Content="±" Style="{StaticResource OperNumButton}" Click="ButtonPosiNege_Click"></Button>
+        <Button x:Name="ButtonRoot" Grid.Row="2" Grid.Column="9"  Content="√" Style="{StaticResource OperNumButton}" Click="ButtonRoot_Click"></Button>
 
         <!--第二行-->
-        <Button x:Name="Button7" Grid.Row="3" Grid.Column="0"  Content="7" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF333333" Click="Button7_Click"></Button>
-        <Button x:Name="Button8" Grid.Row="3" Grid.Column="1"  Content="8" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF333333" Click="Button8_Click"></Button>
-        <Button x:Name="Button9" Grid.Row="3" Grid.Column="2"  Content="9" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF333333" Click="Button9_Click"></Button>
-        <Button x:Name="ButtonDivide" Grid.Row="3" Grid.Column="3"  Content="/" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF1F1F1F" Click="ButtonDivide_Click"></Button>
-        <Button x:Name="ButtonMod" Grid.Row="3" Grid.Column="4"  Content="%" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF1F1F1F" Click="ButtonMod_Click"></Button>
+        <Button x:Name="Button7" Grid.Row="3" Grid.Column="1"  Content="7" Style="{StaticResource OperSymbolButton}" Click="Button7_Click"></Button>
+        <Button x:Name="Button8" Grid.Row="3" Grid.Column="3"  Content="8" Style="{StaticResource OperSymbolButton}" Click="Button8_Click"></Button>
+        <Button x:Name="Button9" Grid.Row="3" Grid.Column="5"  Content="9" Style="{StaticResource OperSymbolButton}" Click="Button9_Click"></Button>
+        <Button x:Name="ButtonDivide" Grid.Row="3" Grid.Column="7"  Content="/" Style="{StaticResource OperNumButton}" Click="ButtonDivide_Click"></Button>
+        <Button x:Name="ButtonMod" Grid.Row="3" Grid.Column="9"  Content="%" Style="{StaticResource OperNumButton}" Click="ButtonMod_Click"></Button>
 
 
         <!--第三行-->
-        <Button x:Name="Button4" Grid.Row="4" Grid.Column="0"  Content="4" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF333333" Click="Button4_Click"></Button>
-        <Button x:Name="Button5" Grid.Row="4" Grid.Column="1"  Content="5" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF333333" Click="Button5_Click"></Button>
-        <Button x:Name="Button6" Grid.Row="4" Grid.Column="2"  Content="6" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF333333" Click="Button6_Click"></Button>
-        <Button x:Name="ButtonMultiply" Grid.Row="4" Grid.Column="3"  Content="*" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF1F1F1F" Click="ButtonMultiply_Click"></Button>
-        <Button x:Name="ButtonFraction" Grid.Row="4" Grid.Column="4"  Content="1/x" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF1F1F1F" Click="ButtonFraction_Click"></Button>
+        <Button x:Name="Button4" Grid.Row="4" Grid.Column="1"  Content="4" Style="{StaticResource OperSymbolButton}" Click="Button4_Click"></Button>
+        <Button x:Name="Button5" Grid.Row="4" Grid.Column="3"  Content="5" Style="{StaticResource OperSymbolButton}" Click="Button5_Click"></Button>
+        <Button x:Name="Button6" Grid.Row="4" Grid.Column="5"  Content="6" Style="{StaticResource OperSymbolButton}" Click="Button6_Click"></Button>
+        <Button x:Name="ButtonMultiply" Grid.Row="4" Grid.Column="7"  Content="*" Style="{StaticResource OperNumButton}" Click="ButtonMultiply_Click"></Button>
+        <Button x:Name="ButtonFraction" Grid.Row="4" Grid.Column="9"  Content="1/x" Style="{StaticResource OperNumButton}" Click="ButtonFraction_Click"></Button>
 
         <!--第四行-->
-        <Button x:Name="Button1" Grid.Row="5" Grid.Column="0"  Content="1" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF333333" Click="Button1_Click"></Button>
-        <Button x:Name="Button2" Grid.Row="5" Grid.Column="1"  Content="2" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF333333" Click="Button2_Click"></Button>
-        <Button x:Name="Button3" Grid.Row="5" Grid.Column="2"  Content="3" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF333333" Click="Button3_Click"></Button>
-        <Button x:Name="ButtonMinus" Grid.Row="5" Grid.Column="3"  Content="-" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF1F1F1F" Click="ButtonMinus_Click"></Button>
-        <Button x:Name="ButtonEqual" Grid.Row="5" Grid.Column="4" Grid.RowSpan="2" FontSize="50" Content="=" HorizontalAlignment="Center" VerticalAlignment="Bottom" MinWidth="20" MinHeight="20" Height="142" Width="70" BorderThickness="0" Background="{Binding Source={ThemeResource ButtonPressedBackgroundThemeBrush}}" Margin="6,0,4,1"/>
+        <Button x:Name="Button1" Grid.Row="5" Grid.Column="1"  Content="1" Style="{StaticResource OperSymbolButton}" Click="Button1_Click"/>
+        <Button x:Name="Button2" Grid.Row="5" Grid.Column="3"  Content="2" Style="{StaticResource OperSymbolButton}" Click="Button2_Click"></Button>
+        <Button x:Name="Button3" Grid.Row="5" Grid.Column="5"  Content="3" Style="{StaticResource OperSymbolButton}" Click="Button3_Click"></Button>
+        <Button x:Name="ButtonMinus" Grid.Row="5" Grid.Column="7"  Content="-" Style="{StaticResource OperNumButton}" Click="ButtonMinus_Click"></Button>
+        <Button x:Name="ButtonEqual" Grid.Row="5" Grid.Column="9" Grid.RowSpan="3" FontSize="50" Content="=" Style="{StaticResource OperNumButton}" Background="{Binding Source={ThemeResource ButtonPressedBackgroundThemeBrush}}"/>
 
         <!--第五行-->
-        <Button x:Name="Button0" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="0" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="150" BorderThickness="0" Background="#FF333333" Margin="5,0.667,5,1" Click="Button0_Click"></Button>
-        <Button x:Name="ButtonPoint" Grid.Row="6" Grid.Column="2"  Content="." HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF333333" Click="ButtonPoint_Click"></Button>
-        <Button x:Name="ButtonPlus" Grid.Row="6" Grid.Column="3"  Content="+" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="20" MinHeight="20" Height="70" Width="70" BorderThickness="0" Background="#FF1F1F1F" Click="ButtonPlus_Click"></Button>
-
+        <Button x:Name="Button0" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Content="0" Style="{StaticResource OperSymbolButton}" Click="Button0_Click" />
+        <Button x:Name="ButtonPoint" Grid.Row="6" Grid.Column="5"  Content="." Style="{StaticResource OperSymbolButton}" Click="ButtonPoint_Click"></Button>
+        <Button x:Name="ButtonPlus" Grid.Row="6" Grid.Column="7"  Content="+"  Style="{StaticResource OperNumButton}" Click="ButtonPlus_Click"></Button>
     </Grid>
 </Page>
