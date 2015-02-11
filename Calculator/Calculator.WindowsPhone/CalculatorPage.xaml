@@ -71,7 +71,7 @@
 
         <!--按钮块 切分成5*5块-->
         <!--第一行-->
-        <Button x:Name="ButtonDel" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Content="←" Style="{StaticResource OperNumButton}" FontSize="30"></Button>
+        <Button x:Name="ButtonDel" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Content="←" Style="{StaticResource OperNumButton}" FontSize="30" Click="ButtonDel_Click"></Button>
         <Button x:Name="ButtonClear" Grid.Row="2" Grid.Column="5"  Content="C"  Style="{StaticResource OperNumButton}" Click="ButtonClear_Click"></Button>
         <Button x:Name="ButtonPosiNege" Grid.Row="2" Grid.Column="7"  Content="±" Style="{StaticResource OperNumButton}" Click="ButtonPosiNege_Click"></Button>
         <Button x:Name="ButtonRoot" Grid.Row="2" Grid.Column="9"  Content="√" Style="{StaticResource OperNumButton}" Click="ButtonRoot_Click"></Button>
@@ -96,7 +96,7 @@
         <Button x:Name="Button2" Grid.Row="5" Grid.Column="3"  Content="2" Style="{StaticResource OperSymbolButton}" Click="Button2_Click"></Button>
         <Button x:Name="Button3" Grid.Row="5" Grid.Column="5"  Content="3" Style="{StaticResource OperSymbolButton}" Click="Button3_Click"></Button>
         <Button x:Name="ButtonMinus" Grid.Row="5" Grid.Column="7"  Content="-" Style="{StaticResource OperNumButton}" Click="ButtonMinus_Click"></Button>
-        <Button x:Name="ButtonEqual" Grid.Row="5" Grid.Column="9" Grid.RowSpan="3" FontSize="50" Content="=" Style="{StaticResource OperNumButton}" Background="{Binding Source={ThemeResource ButtonPressedBackgroundThemeBrush}}"/>
+        <Button x:Name="ButtonEqual" Grid.Row="5" Grid.Column="9" Grid.RowSpan="3" FontSize="50" Content="=" Style="{StaticResource OperNumButton}" Background="{ThemeResource ButtonPressedBackgroundThemeBrush}" Click="ButtonEqual_Click"/>
 
         <!--第五行-->
         <Button x:Name="Button0" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Content="0" Style="{StaticResource OperSymbolButton}" Click="Button0_Click" />

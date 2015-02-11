@@ -27,10 +27,17 @@ namespace Calculator
         private double basicDouble;//如果面板上的数是小数
 
         private bool basicSymbolClicked; //加减乘除MOD等基本运算按键是否按下
+        private bool operNumClicking;//操作数正在输入
 
         private string ResultTextBlockStr;//计算框中的字符串
 
         private string ProgressTextBlockStr;//过程框中的字符串
+
+        private double operNum1;//第一个操作数
+
+        private string operSymbol;//操作符
+
+        private double operNum2;//第二个操作数
 
 
         //分号辅助变量
@@ -48,6 +55,7 @@ namespace Calculator
             this.NavigationCacheMode = NavigationCacheMode.Required;
 
             basicSymbolClicked = false;
+            operNumClicking = false;
             basicInt = 0;
             basicDouble = 0;
             ResultTextBlockStr = "";
@@ -92,141 +100,142 @@ namespace Calculator
 
         //数字按钮事件（包括小数点）
         //NOTE：这个地方的实现值得改进，可以根据只通过一个函数来实现所有功能。目前不知道如何在xaml控件中传参数或者辨识哪个按钮触发事件
+        //choice表示第几个按钮
+        private void ButtonNumberClickHelper(string buttonContent)
+        {
+            operNumClicking = true;
+
+            //运算符已经按过,之后继续按数字键
+            if (basicSymbolClicked)
+            {
+                basicSymbolClicked = false;
+                ResultTextBlock.Text = buttonContent;
+            }
+            else
+            {
+                if (ResultTextBlock.Text != "0")
+                    ResultTextBlock.Text += buttonContent;
+                else
+                    ResultTextBlock.Text = buttonContent;
+            }
+        }
+
         private void Button0_Click(object sender, RoutedEventArgs e)
         {
-            if (ResultTextBlock.Text != "0")
-                ResultTextBlock.Text += "0";
+            ButtonNumberClickHelper("0");
         }
 
         private void Button1_Click(object sender, RoutedEventArgs e)
         {
-            if (ResultTextBlock.Text != "0")
-                ResultTextBlock.Text += "1";
-            else
-                ResultTextBlock.Text = "1";
+            ButtonNumberClickHelper("1");
         }
 
         private void Button2_Click(object sender, RoutedEventArgs e)
         {
-            if (ResultTextBlock.Text != "0")
-                ResultTextBlock.Text += "2";
-            else
-                ResultTextBlock.Text = "2";
+            ButtonNumberClickHelper("2");
         }
 
         private void Button3_Click(object sender, RoutedEventArgs e)
         {
-            if (ResultTextBlock.Text != "0")
-                ResultTextBlock.Text += "3";
-            else
-                ResultTextBlock.Text = "3";
+            ButtonNumberClickHelper("3");
         }
 
         private void Button4_Click(object sender, RoutedEventArgs e)
         {
-            if (ResultTextBlock.Text != "0")
-                ResultTextBlock.Text += "4";
-            else
-                ResultTextBlock.Text = "4";
+            ButtonNumberClickHelper("4");
         }
 
         private void Button5_Click(object sender, RoutedEventArgs e)
         {
-            if (ResultTextBlock.Text != "0")
-                ResultTextBlock.Text += "5";
-            else
-                ResultTextBlock.Text = "5";
+            ButtonNumberClickHelper("5");
         }
 
         private void Button6_Click(object sender, RoutedEventArgs e)
         {
-            if (ResultTextBlock.Text != "0")
-                ResultTextBlock.Text += "6";
-            else
-                ResultTextBlock.Text = "6";
+            ButtonNumberClickHelper("6");
         }
 
 
         private void Button7_Click(object sender, RoutedEventArgs e)
         {
-            if (ResultTextBlock.Text != "0")
-                ResultTextBlock.Text += "7";
-            else
-                ResultTextBlock.Text = "7";
+            ButtonNumberClickHelper("7");
         }
 
         private void Button8_Click(object sender, RoutedEventArgs e)
         {
-            if (ResultTextBlock.Text != "0")
-                ResultTextBlock.Text += "8";
-            else
-                ResultTextBlock.Text = "8";
+            ButtonNumberClickHelper("8");
         }
 
         private void Button9_Click(object sender, RoutedEventArgs e)
         {
-            if (ResultTextBlock.Text != "0")
-                ResultTextBlock.Text += "9";
-            else
-                ResultTextBlock.Text = "9";
+            ButtonNumberClickHelper("9");
         }
 
         private void ButtonPoint_Click(object sender, RoutedEventArgs e)
         {
-            String resultStr = ResultTextBlock.Text;
-            if (!resultStr.Contains("."))
-                ResultTextBlock.Text += ".";
+            operNumClicking = true;
+
+            //运算符已经按过,之后继续按数字键
+            if (basicSymbolClicked)
+            {
+                basicSymbolClicked = false;
+                ResultTextBlock.Text = "0.";
+            }
+            else
+            {
+                String resultStr = ResultTextBlock.Text;
+                if (!resultStr.Contains("."))
+                    ResultTextBlock.Text += ".";
+            }
         }
 
         //基本运算按钮事件，包括加减乘除、mod
+        private void ButtonSymbolClickHelper(string symbol)
+        {
+            operNumClicking = false;
+
+            if (!basicSymbolClicked)
+            {
+                ResultTextBlockStr = ResultTextBlock.Text;
+                operNum1 = double.Parse(ResultTextBlockStr);
+            }
+
+            operSymbol = symbol;
+
+            ProgressTextBlock.Text = ResultTextBlockStr + " " + symbol;
+            basicSymbolClicked = true;
+        }
+
         private void ButtonPlus_Click(object sender, RoutedEventArgs e)
         {
-            if (!basicSymbolClicked)
-                ResultTextBlockStr = ResultTextBlock.Text;
-
-            ProgressTextBlock.Text = ResultTextBlockStr + " +";
-            basicSymbolClicked = true;
+            ButtonSymbolClickHelper("+");
         }
 
         private void ButtonMinus_Click(object sender, RoutedEventArgs e)
         {
-            if (!basicSymbolClicked)
-                ResultTextBlockStr = ResultTextBlock.Text;
-
-            ProgressTextBlock.Text = ResultTextBlockStr + " -";
-            basicSymbolClicked = true;
+            ButtonSymbolClickHelper("-");
         }
 
         private void ButtonMultiply_Click(object sender, RoutedEventArgs e)
         {
-            if (!basicSymbolClicked)
-                ResultTextBlockStr = ResultTextBlock.Text;
-
-            ProgressTextBlock.Text = ResultTextBlockStr + " *";
-            basicSymbolClicked = true;
+            ButtonSymbolClickHelper("*");
         }
 
         private void ButtonDivide_Click(object sender, RoutedEventArgs e)
         {
-            if (!basicSymbolClicked)
-                ResultTextBlockStr = ResultTextBlock.Text;
-
-            ProgressTextBlock.Text = ResultTextBlockStr + " /";
-            basicSymbolClicked = true;
+            ButtonSymbolClickHelper("/");
         }
 
         private void ButtonMod_Click(object sender, RoutedEventArgs e)
         {
-            if (!basicSymbolClicked)
-                ResultTextBlockStr = ResultTextBlock.Text;
-
-            ProgressTextBlock.Text = ResultTextBlockStr + " Mod";
-            basicSymbolClicked = true;
+            ButtonSymbolClickHelper("%");
         }
 
         //单运算符按钮事件，包括根号、正负号、分号
         private void ButtonRoot_Click(object sender, RoutedEventArgs e)
         {
+            operNumClicking = false;
+
             sqrtClickCnt++;
             ResultTextBlockStr = ResultTextBlock.Text;
             ProgressTextBlockStr = ProgressTextBlock.Text;
@@ -280,6 +289,8 @@ namespace Calculator
 
         private void ButtonFraction_Click(object sender, RoutedEventArgs e)
         {
+            operNumClicking = false;
+
             fractionClickCnt++;
             ResultTextBlockStr = ResultTextBlock.Text;
             ProgressTextBlockStr = ProgressTextBlock.Text;
@@ -335,6 +346,8 @@ namespace Calculator
 
         private void ButtonPosiNege_Click(object sender, RoutedEventArgs e)
         {
+            operNumClicking = false;
+
             ResultTextBlockStr = ResultTextBlock.Text;
             ProgressTextBlockStr = ProgressTextBlock.Text;
 
@@ -367,6 +380,77 @@ namespace Calculator
                 else
                     ResultTextBlock.Text = "-" + ResultTextBlockStr;
             }
+        }
+
+        //删除按钮
+        private void ButtonDel_Click(object sender, RoutedEventArgs e)
+        {
+            //当操作数正在输入时，delete按钮才能按
+            if (operNumClicking)
+            {
+                ResultTextBlockStr = ResultTextBlock.Text;
+
+                //当结果框的字符串只有一位时，将其设为0
+                if (ResultTextBlockStr.Length == 1)
+                {
+                    ResultTextBlock.Text = "0";
+                    operNumClicking = false;
+                }
+                else
+                {
+                    ResultTextBlock.Text = ResultTextBlockStr.Substring(0, ResultTextBlockStr.Length-1);
+                }
+            }
+        }
+
+        //等号按钮
+        private void ButtonEqual_Click(object sender, RoutedEventArgs e)
+        {
+            operNum2 = double.Parse(ResultTextBlock.Text);
+
+            Equal(operNum1,operSymbol,operNum2);
+        }
+
+        //输出运算数1和运算数2在运算符下的结果
+        private void Equal(double num1,string symbol,double num2)
+        {
+            double result=0;
+            string resultStr = "";
+
+            if (symbol == "+")
+            {
+                result = num1 + num2;
+                resultStr = result.ToString();
+            }
+            else if (symbol == "-")
+            {
+                result = num1 - num2;
+                resultStr = result.ToString();
+            }
+            else if (symbol == "*")
+            {
+                result = num1 * num2;
+                resultStr = result.ToString();
+            }
+            else if (symbol == "/")
+            {
+                if (num2 == 0)
+                    resultStr = "除数不能为0";
+                else
+                {
+                    result = num1 - num2;
+                    resultStr = result.ToString();
+                }
+            }
+            else if (symbol == "%")
+            {
+                result = num1 % num2;
+                resultStr = result.ToString();
+            }
+            else
+                resultStr = "结果未定义";
+
+            ResultTextBlock.Text = resultStr;
         }
     }
 }
