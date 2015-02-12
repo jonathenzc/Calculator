@@ -30,6 +30,7 @@ namespace Calculator
         private bool operNumClicking;//操作数正在输入
         private bool equalClicked;//等号已经按下
         private bool isErrorInput;//分母为0、根号内为负数时，计算器必须按C才能重新开始
+        private bool isUniOperSymbolClicked;//单元运算符按钮是否按下
 
         private string ResultTextBlockStr;//计算框中的字符串
 
@@ -60,12 +61,14 @@ namespace Calculator
             operNumClicking = false;
             equalClicked = false;
             isErrorInput = false;
+            isUniOperSymbolClicked = false;
             basicInt = 0;
             basicDouble = 0;
             ResultTextBlockStr = "";
             ProgressTextBlockStr = "";
             itsFraction = 0;
             fractionClickCnt = 0;
+            operSymbol = "";
         }
 
         /// <summary>
@@ -94,6 +97,7 @@ namespace Calculator
             operNumClicking = false;
             equalClicked = false;
             isErrorInput = false;
+            isUniOperSymbolClicked = false;
             basicInt = 0;
             basicDouble = 0;
             ResultTextBlockStr = "";
@@ -103,6 +107,7 @@ namespace Calculator
             ResultTextBlock.FontSize = 80;//在进行分数计算时，如果数为0时，不能计算。此时的FontSize位50，这里重新将其设置为初始值
             sqrtClickCnt = 0;
             itsSqrt = 0;
+            operSymbol = "";
         }
 
         //数字按钮事件（包括小数点）
@@ -209,14 +214,15 @@ namespace Calculator
             if (!isErrorInput)
             {
                 operNumClicking = false;
+                char[] basicSymbolArray = new char[] { '+', '-', '*', '/', '%' };
 
                 //处理按完运算符按钮后继续按其他的运算符按纽
                 if (!basicSymbolClicked)
                 {
                     ResultTextBlockStr = ResultTextBlock.Text;
 
-                    //处理连按事件，比如1+2+3
-                    if (ProgressTextBlock.Text != "")
+                    //处理连按事件，比如1+2+3，但是sqrt、根号没用考虑在内
+                    if (ProgressTextBlock.Text != "" && ProgressTextBlock.Text.IndexOfAny(basicSymbolArray)!=-1)
                     {
                         operNum2 = double.Parse(ResultTextBlock.Text); ;
                         ResultTextBlock.Text = Equal(operNum1, operSymbol, operNum2);
@@ -226,7 +232,16 @@ namespace Calculator
                 }
 
                 operSymbol = symbol;
-                ProgressTextBlock.Text += ResultTextBlockStr + " " + symbol + " ";
+
+                //sqrt、根号不考虑在内
+                if (ProgressTextBlock.Text.IndexOfAny(basicSymbolArray) != -1)
+                    ProgressTextBlock.Text += ResultTextBlockStr + " " + symbol + " ";
+                else
+                {
+                    isUniOperSymbolClicked = false;
+                    ProgressTextBlock.Text = ResultTextBlockStr + " " + symbol;
+                }
+
                 basicSymbolClicked = true;
             }
         }
@@ -262,6 +277,7 @@ namespace Calculator
             if (!isErrorInput)
             {
                 operNumClicking = false;
+                isUniOperSymbolClicked = true;
 
                 sqrtClickCnt++;
                 ResultTextBlockStr = ResultTextBlock.Text;
@@ -285,7 +301,7 @@ namespace Calculator
                     else
                     {
                         ProgressTextBlockStr = ProgressTextBlock.Text;
-                        char[] basicSymbolArray = new char[] { '+', '-', '*', '/', 'M' };
+                        char[] basicSymbolArray = new char[] { '+', '-', '*', '/', '%' };
                         int basicSymbolIndex = ProgressTextBlockStr.IndexOfAny(basicSymbolArray);
 
                         //获取之前的过程字符串和基数字符串
@@ -321,6 +337,7 @@ namespace Calculator
             if (!isErrorInput)
             {
                 operNumClicking = false;
+                isUniOperSymbolClicked = true;
 
                 fractionClickCnt++;
                 ResultTextBlockStr = ResultTextBlock.Text;
@@ -345,7 +362,7 @@ namespace Calculator
                     else
                     {
                         ProgressTextBlockStr = ProgressTextBlock.Text;
-                        char[] basicSymbolArray = new char[] { '+', '-', '*', '/', 'M' };
+                        char[] basicSymbolArray = new char[] { '+', '-', '*', '/', '%' };
                         int basicSymbolIndex = ProgressTextBlockStr.IndexOfAny(basicSymbolArray);
 
                         //获取之前的过程字符串和基数字符串
@@ -445,11 +462,11 @@ namespace Calculator
         //等号按钮
         private void ButtonEqual_Click(object sender, RoutedEventArgs e)
         {
-            if (!isErrorInput)
+            if (!isErrorInput && operSymbol !="")
             {
                 equalClicked = true;//等号已经按下
                 operNum2 = double.Parse(ResultTextBlock.Text);
-
+                 
                 ResultTextBlock.Text = Equal(operNum1, operSymbol, operNum2);
 
                 //等号的话过程框可以清空

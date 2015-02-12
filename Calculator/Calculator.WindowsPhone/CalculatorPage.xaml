@@ -62,7 +62,7 @@
         </Grid.ColumnDefinitions>
 
         <!--文本块标题和结果 -->
-        <TextBlock x:Name="TitleBlock" Grid.Row="0" Grid.ColumnSpan="11" Text="计算器" Margin="0,40,0,0" FontSize="40"></TextBlock>
+        <TextBlock x:Name="TitleBlock" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="11" Text="计算器" Margin="0,40,0,0" FontSize="40"></TextBlock>
 
         <StackPanel Grid.Row="1" Grid.ColumnSpan="11">
             <TextBlock x:Name="ProgressTextBlock" Height="30" FontSize="20" TextAlignment="Right" ></TextBlock>
