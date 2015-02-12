@@ -22,15 +22,12 @@ namespace Calculator
     /// </summary>
     public sealed partial class CalculatorPage : Page
     {
-        private int basicInt;//如果面板上的数是整数
-
         private double basicDouble;//如果面板上的数是小数
 
         private bool basicSymbolClicked; //加减乘除MOD等基本运算按键是否按下
         private bool operNumClicking;//操作数正在输入
         private bool equalClicked;//等号已经按下
         private bool isErrorInput;//分母为0、根号内为负数时，计算器必须按C才能重新开始
-        private bool isUniOperSymbolClicked;//单元运算符按钮是否按下
 
         private string ResultTextBlockStr;//计算框中的字符串
 
@@ -61,8 +58,6 @@ namespace Calculator
             operNumClicking = false;
             equalClicked = false;
             isErrorInput = false;
-            isUniOperSymbolClicked = false;
-            basicInt = 0;
             basicDouble = 0;
             ResultTextBlockStr = "";
             ProgressTextBlockStr = "";
@@ -97,8 +92,6 @@ namespace Calculator
             operNumClicking = false;
             equalClicked = false;
             isErrorInput = false;
-            isUniOperSymbolClicked = false;
-            basicInt = 0;
             basicDouble = 0;
             ResultTextBlockStr = "";
             ProgressTextBlockStr = "";
@@ -238,7 +231,6 @@ namespace Calculator
                     ProgressTextBlock.Text += ResultTextBlockStr + " " + symbol + " ";
                 else
                 {
-                    isUniOperSymbolClicked = false;
                     ProgressTextBlock.Text = ResultTextBlockStr + " " + symbol;
                 }
 
@@ -277,7 +269,6 @@ namespace Calculator
             if (!isErrorInput)
             {
                 operNumClicking = false;
-                isUniOperSymbolClicked = true;
 
                 sqrtClickCnt++;
                 ResultTextBlockStr = ResultTextBlock.Text;
@@ -337,7 +328,6 @@ namespace Calculator
             if (!isErrorInput)
             {
                 operNumClicking = false;
-                isUniOperSymbolClicked = true;
 
                 fractionClickCnt++;
                 ResultTextBlockStr = ResultTextBlock.Text;
