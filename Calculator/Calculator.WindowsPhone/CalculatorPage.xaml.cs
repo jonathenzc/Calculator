@@ -215,23 +215,44 @@ namespace Calculator
                     ResultTextBlockStr = ResultTextBlock.Text;
 
                     //处理连按事件，比如1+2+3，但是sqrt、根号没用考虑在内
-                    if (ProgressTextBlock.Text != "" && ProgressTextBlock.Text.IndexOfAny(basicSymbolArray)!=-1)
+                    if (ProgressTextBlock.Text != "" && ProgressTextBlock.Text.IndexOfAny(basicSymbolArray) != -1)
                     {
                         operNum2 = double.Parse(ResultTextBlock.Text); ;
                         ResultTextBlock.Text = Equal(operNum1, operSymbol, operNum2);
                     }
                     else
                         operNum1 = double.Parse(ResultTextBlockStr);
+
+                    operSymbol = symbol;
+
+                    //sqrt、根号不考虑在内
+                    int lastSymbolIndex = ProgressTextBlock.Text.LastIndexOfAny(basicSymbolArray);
+
+                    if (lastSymbolIndex != -1)//基本运算符索引在过程框字符串倒数第二个，处理"3 * "这样的情况
+                    {
+                        if (lastSymbolIndex + 2 < ProgressTextBlock.Text.Length) // 3 * sqrt(3)
+                            ProgressTextBlock.Text += symbol + " ";
+                        else
+                            ProgressTextBlock.Text += ResultTextBlockStr + " " + symbol + " ";
+                    }
+                    else
+                    {
+                        if (ProgressTextBlock.Text == "")//处理按了数字键后按运算符键
+                            ProgressTextBlock.Text = ResultTextBlockStr + " " + symbol + " ";
+                        else
+                            ProgressTextBlock.Text += symbol + " ";
+                    }
                 }
-
-                operSymbol = symbol;
-
-                //sqrt、根号不考虑在内
-                if (ProgressTextBlock.Text.IndexOfAny(basicSymbolArray) != -1)
-                    ProgressTextBlock.Text += ResultTextBlockStr + " " + symbol + " ";
                 else
                 {
-                    ProgressTextBlock.Text = ResultTextBlockStr + " " + symbol;
+                    int lastSymbolIndex = ProgressTextBlock.Text.Length - 2;
+                    string lastSymbol = ProgressTextBlock.Text.Substring(lastSymbolIndex, 1);
+                    if (lastSymbol != symbol)//处理3 * 之后按了其他运算符
+                    {
+                        ProgressTextBlock.Text = ProgressTextBlock.Text.Substring(0, lastSymbolIndex) + symbol + " ";
+                    }
+
+                    operSymbol = symbol;
                 }
 
                 basicSymbolClicked = true;
@@ -287,7 +308,7 @@ namespace Calculator
                     if (!basicSymbolClicked)
                     {
                         //显示过程框的内容
-                        ProgressTextBlock.Text = "sqrt(" + ProgressTextBlockStr + ")";
+                        ProgressTextBlock.Text = "sqrt(" + ProgressTextBlockStr + ") ";
                     }
                     else
                     {
@@ -302,9 +323,9 @@ namespace Calculator
                         string reciprocStr = "";
 
                         if (basicSymbolIndex + 2 < ProgressTextBlockStr.Length)//第一次按分号，如字符串ProgressTextBlockStr为"98 +"
-                            reciprocStr = " sqrt(" + ProgressTextBlockStr.Substring(basicSymbolIndex + 2) + ")";
+                            reciprocStr = " sqrt(" + ProgressTextBlockStr.Substring(basicSymbolIndex + 2) + ") ";
                         else
-                            reciprocStr = " sqrt(" + baseNumberStr + ")";
+                            reciprocStr = " sqrt(" + baseNumberStr + ") ";
 
                         ProgressTextBlock.Text = previousProgressStr + reciprocStr;
                     }
@@ -313,6 +334,7 @@ namespace Calculator
                     basicDouble = double.Parse(ResultTextBlockStr);
                     itsSqrt = System.Math.Sqrt(basicDouble);
                     ResultTextBlock.Text = itsSqrt.ToString();
+                    basicSymbolClicked = false;
                 }
                 else
                 {
@@ -347,7 +369,7 @@ namespace Calculator
                     if (!basicSymbolClicked)
                     {
                         //显示过程框的内容
-                        ProgressTextBlock.Text = "reciproc(" + ProgressTextBlockStr + ")";
+                        ProgressTextBlock.Text = "reciproc(" + ProgressTextBlockStr + ") ";
                     }
                     else
                     {
@@ -362,9 +384,9 @@ namespace Calculator
                         string reciprocStr = "";
 
                         if (basicSymbolIndex + 2 < ProgressTextBlockStr.Length)//第一次按分号，如字符串ProgressTextBlockStr为"98 +"
-                            reciprocStr = " reciproc(" + ProgressTextBlockStr.Substring(basicSymbolIndex + 2) + ")";
+                            reciprocStr = " reciproc(" + ProgressTextBlockStr.Substring(basicSymbolIndex + 2) + ") ";
                         else
-                            reciprocStr = " reciproc(" + baseNumberStr + ")";
+                            reciprocStr = " reciproc(" + baseNumberStr + ") ";
 
                         ProgressTextBlock.Text = previousProgressStr + reciprocStr;
                     }
@@ -461,6 +483,10 @@ namespace Calculator
 
                 //等号的话过程框可以清空
                 ProgressTextBlock.Text = "";
+
+                //初始化一些变量
+                sqrtClickCnt = 0;
+                basicSymbolClicked = false;
             }
         }
 
