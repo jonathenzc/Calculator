@@ -112,6 +112,7 @@ namespace Calculator
             {
                 operNumClicking = true;
                 sqrtClickCnt = 0;
+                fractionClickCnt = 0;
 
                 //运算符已经按过,之后继续按数字键
                 if (basicSymbolClicked || equalClicked)
@@ -187,6 +188,7 @@ namespace Calculator
             {
                 operNumClicking = true;
                 sqrtClickCnt = 0;
+                fractionClickCnt = 0;
 
                 //运算符已经按过,之后继续按数字键
                 if (basicSymbolClicked)
@@ -210,6 +212,7 @@ namespace Calculator
             {
                 operNumClicking = false;
                 sqrtClickCnt = 0;
+                fractionClickCnt = 0;
                 char[] basicSymbolArray = new char[] { '+', '-', '*', '/', '%' };
 
                 //处理按完运算符按钮后继续按其他的运算符按纽
@@ -293,7 +296,7 @@ namespace Calculator
             if (!isErrorInput)
             {
                 operNumClicking = false;
-
+                fractionClickCnt = 0;
                 sqrtClickCnt++;
                 ResultTextBlockStr = ResultTextBlock.Text;
                 ProgressTextBlockStr = ProgressTextBlock.Text;
@@ -376,30 +379,40 @@ namespace Calculator
                     if (fractionClickCnt == 1)
                     {
                         basicDouble = double.Parse(ResultTextBlockStr);
-                        itsFraction = 1.0 / basicDouble;
                         ProgressTextBlockStr = basicDouble.ToString();
                     }
 
+                    char[] basicSymbolArray = new char[] { '+', '-', '*', '/', '%' };
+
                     //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加reciproc
-                    if (!basicSymbolClicked)
+                    if (ProgressTextBlock.Text.IndexOf("r") == 0 || (!basicSymbolClicked && fractionClickCnt == 1))
                     {
                         //显示过程框的内容
-                        ProgressTextBlock.Text = "reciproc(" + ProgressTextBlockStr + ")";
+                        if (ProgressTextBlock.Text.IndexOfAny(basicSymbolArray) != -1)//过程框中有运算过程且有运算符号
+                            ProgressTextBlock.Text += "reciproc(" + ResultTextBlockStr + ")";
+                        else
+                            ProgressTextBlock.Text = "reciproc(" + ProgressTextBlockStr + ")";
                     }
                     else
                     {
                         ProgressTextBlockStr = ProgressTextBlock.Text;
-                        char[] basicSymbolArray = new char[] { '+', '-', '*', '/', '%' };
-                        int basicSymbolIndex = ProgressTextBlockStr.IndexOfAny(basicSymbolArray);
+                        int lastBasicSymbolIndex = ProgressTextBlockStr.LastIndexOfAny(basicSymbolArray);
 
                         //获取之前的过程字符串和基数字符串
                         //处理这样的操作:98 + reciproc(98)，当再触发该分号按钮后，变成98 + reciproc(reciproc(98))
-                        string baseNumberStr = ProgressTextBlockStr.Substring(0, basicSymbolIndex - 1);
-                        string previousProgressStr = ProgressTextBlockStr.Substring(0, basicSymbolIndex + 1);
+                        string baseNumberStr = "";
+                        int firstBasicSymbolIndex = ProgressTextBlockStr.IndexOfAny(basicSymbolArray);
+
+                        if (firstBasicSymbolIndex == lastBasicSymbolIndex)//1+
+                            baseNumberStr = ProgressTextBlockStr.Substring(0, lastBasicSymbolIndex - 1);
+                        else//1+2+
+                            baseNumberStr = ResultTextBlock.Text;
+
+                        string previousProgressStr = ProgressTextBlockStr.Substring(0, lastBasicSymbolIndex + 1);
                         string reciprocStr = "";
 
-                        if (basicSymbolIndex + 2 < ProgressTextBlockStr.Length)//第一次按分号，如字符串ProgressTextBlockStr为"98 +"
-                            reciprocStr = " reciproc(" + ProgressTextBlockStr.Substring(basicSymbolIndex + 2) + ") ";
+                        if (lastBasicSymbolIndex + 2 < ProgressTextBlockStr.Length)//第一次按分号，如字符串ProgressTextBlockStr为"98 +"
+                            reciprocStr = " reciproc(" + ProgressTextBlockStr.Substring(lastBasicSymbolIndex + 2) + ")";
                         else
                             reciprocStr = " reciproc(" + baseNumberStr + ")";
 
@@ -407,10 +420,14 @@ namespace Calculator
                     }
 
                     //显示当前结果框的内容
+                    itsFraction = 1.0 / basicDouble;
+
                     if (fractionClickCnt % 2 == 1)
                         ResultTextBlock.Text = itsFraction.ToString();
                     else
                         ResultTextBlock.Text = basicDouble.ToString();
+
+                    basicSymbolClicked = false;
                 }
                 else
                 {
