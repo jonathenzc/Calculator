@@ -5,7 +5,7 @@
   <Properties>
     <DisplayName>Calculator.WindowsPhone</DisplayName>
     <PublisherDisplayName>ZhangCheng</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <Logo>Assets\Calculator_50x50.png</Logo>
   </Properties>
   <Prerequisites>
     <OSMinVersion>6.3.1</OSMinVersion>
@@ -16,10 +16,10 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Calculator.WindowsPhone.App">
-      <m3:VisualElements DisplayName="Calculator" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="这是个模仿Windows桌面系统的计算器。" ForegroundText="light" BackgroundColor="transparent">
-        <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png">
+      <m3:VisualElements DisplayName="Calculator" Square150x150Logo="Assets\Calculator_150x150.png" Square44x44Logo="Assets\Calculator_44x44.png" Description="这是个模仿Windows桌面系统的计算器。" ForegroundText="light" BackgroundColor="transparent">
+        <m3:DefaultTile Wide310x150Logo="Assets\Calculator_310x150.png" Square71x71Logo="Assets\Calculator_71x71.png">
         </m3:DefaultTile>
-        <m3:SplashScreen Image="Assets\SplashScreen.png" />
+        <m3:SplashScreen Image="Assets\Calculator_480x800.png" />
       </m3:VisualElements>
     </Application>
   </Applications>
