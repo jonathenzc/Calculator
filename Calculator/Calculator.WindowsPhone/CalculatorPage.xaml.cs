@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Devices.Sensors;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -39,6 +41,8 @@ namespace Calculator
 
         private double operNum2;//第二个操作数
 
+        //设备旋转感应器
+        private SimpleOrientationSensor sensor;
 
         //分号辅助变量
         private double itsFraction;
@@ -64,6 +68,28 @@ namespace Calculator
             itsFraction = 0;
             fractionClickCnt = 0;
             operSymbol = "";
+
+            sensor = SimpleOrientationSensor.GetDefault();
+            // Assign an event handler for the sensor orientation-changed event
+            if (sensor != null)
+            {
+                sensor.OrientationChanged += new TypedEventHandler<SimpleOrientationSensor, SimpleOrientationSensorOrientationChangedEventArgs>(OrientationChanged);
+            }
+        }
+
+        private async void OrientationChanged(object sender, SimpleOrientationSensorOrientationChangedEventArgs e)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                SimpleOrientation orientation = e.Orientation;
+                switch (orientation)
+                {
+                    case SimpleOrientation.Rotated90DegreesCounterclockwise:
+                    case SimpleOrientation.Rotated270DegreesCounterclockwise:
+                        Frame.Navigate(typeof(CalculatorRotatedPage));
+                        break;
+                }
+            });
         }
 
         /// <summary>
