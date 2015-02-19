@@ -8,7 +8,123 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <!--设计按钮样式-->
+    <Page.Resources>
+        <!--操作数按钮样式-->
+        <Style TargetType="Button" x:Key="OperSymbolButton">
+            <Setter Property="Height" Value="Auto"></Setter>
+            <Setter Property="Width" Value="Auto"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+            <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="MinHeight" Value="10"></Setter>
+            <Setter Property="MinWidth" Value="10"></Setter>
+            <Setter Property="Background" Value="{ThemeResource PhoneLowBrush}"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+        </Style>
+
+        <!--操作符按钮样式-->
+        <Style TargetType="Button" x:Key="OperNumButton">
+            <Setter Property="Height" Value="Auto"></Setter>
+            <Setter Property="Width" Value="Auto"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+            <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="MinHeight" Value="10"></Setter>
+            <Setter Property="MinWidth" Value="10"></Setter>
+            <Setter Property="Background" Value="{ThemeResource PhoneChromeBrush}"></Setter>
+            <Setter Property="FontSize" Value="25"></Setter>
+        </Style>
+    </Page.Resources>    
+    
     <Grid>
-        <TextBlock FontSize="80">helloworlksjfdaklsajlkf</TextBlock>
-    </Grid>
+        <!-- 定义7行 比例分别为1:1.5:1:1:1:1:1-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="1.5*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <!-- 定义17列 其中第一列的比例为0.1,空出提供空间.按钮共分为8列,间隔比例为0.13的分割列-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.1*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.13*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.13*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.13*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.13*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.13*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.13*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.13*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.13*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <!-- 标题框-->
+        <TextBlock FontSize="50" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="15">计算器</TextBlock>
+        
+        <!-- 结果框-->
+        <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="15">
+            <TextBlock x:Name="ProgressTextBlock" Height="20" FontSize="20" TextAlignment="Right" ></TextBlock>
+            <TextBlock x:Name="ResultTextBlock"  Height="50" FontSize="50" TextAlignment="Right" >0</TextBlock>
+        </StackPanel>
+
+        <!--按钮块 切分成5*9块-->
+        <!--第一行-->
+        <Button x:Name="ButtonLn" Grid.Row="2" Grid.Column="1" Content="ln" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonLogTen" Grid.Row="2" Grid.Column="3" Content="log" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonTenX" Grid.Row="2" Grid.Column="5" Content="10^x" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonDel" Grid.Row="2" Grid.Column="7" Content="⇦" Grid.ColumnSpan="3" Style="{StaticResource OperSymbolButton}" Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonClear" Grid.Row="2" Grid.Column="11" Content="C" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonPosiNega" Grid.Row="2" Grid.Column="13" Content="±" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonSqrt" Grid.Row="2" Grid.Column="15" Content="√" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        
+        <!--第二行-->
+        <Button x:Name="ButtonSin" Grid.Row="3" Grid.Column="1" Content="sin" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonCos" Grid.Row="3" Grid.Column="3" Content="cos" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonTan" Grid.Row="3" Grid.Column="5" Content="tan" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="Button7" Grid.Row="3" Grid.Column="7" Content="7" Style="{StaticResource OperNumButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="Button8" Grid.Row="3" Grid.Column="9" Content="8" Style="{StaticResource OperNumButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="Button9" Grid.Row="3" Grid.Column="11" Content="9" Style="{StaticResource OperNumButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonDivide" Grid.Row="3" Grid.Column="13" Content="/" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonMod" Grid.Row="3" Grid.Column="15" Content="%" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+
+        <!--第三行-->
+        <Button x:Name="ButtonSinh" Grid.Row="4" Grid.Column="1" Content="sinh" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonCosh" Grid.Row="4" Grid.Column="3" Content="cosh" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonTanh" Grid.Row="4" Grid.Column="5" Content="tanh" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="Button4" Grid.Row="4" Grid.Column="7" Content="4" Style="{StaticResource OperNumButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="Button5" Grid.Row="4" Grid.Column="9" Content="5" Style="{StaticResource OperNumButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="Button6" Grid.Row="4" Grid.Column="11" Content="6" Style="{StaticResource OperNumButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonMultiply" Grid.Row="4" Grid.Column="13" Content="*" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonFraction" Grid.Row="4" Grid.Column="15" Content="1/x" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+
+        <!--第四行-->
+        <Button x:Name="ButtonSquare" Grid.Row="5" Grid.Column="1" Content="x^2" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonCube" Grid.Row="5" Grid.Column="3" Content="x^3" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonXY" Grid.Row="5" Grid.Column="5" Content="x^y" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="Button1" Grid.Row="5" Grid.Column="7" Content="1" Style="{StaticResource OperNumButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="Button2" Grid.Row="5" Grid.Column="9" Content="2" Style="{StaticResource OperNumButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="Button3" Grid.Row="5" Grid.Column="11" Content="3" Style="{StaticResource OperNumButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonMinus" Grid.Row="5" Grid.Column="13" Content="-" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonEqual" Grid.Row="5" Grid.Column="15" Content="=" Grid.RowSpan="2" Style="{StaticResource OperSymbolButton}" Background="{ThemeResource ButtonPressedBackgroundThemeBrush}" Click="ButtonDel_Click"></Button>
+
+        <!--第五行-->
+        <Button x:Name="ButtonFact" Grid.Row="6" Grid.Column="1" Content="n!" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonCubeRoot" Grid.Row="6" Grid.Column="3" Content="3√x" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonYRoot" Grid.Row="6" Grid.Column="5" Content="y√x" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="Button0" Grid.Row="6" Grid.Column="7" Content="0" Grid.ColumnSpan="3" Style="{StaticResource OperNumButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonPoint" Grid.Row="6" Grid.Column="11" Content="." Style="{StaticResource OperNumButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonPlus" Grid.Row="6" Grid.Column="13" Content="+" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+    </Grid>                                   
 </Page>
