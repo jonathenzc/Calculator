@@ -61,5 +61,30 @@ namespace Calculator
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
         }
+
+
+        //删除按钮
+        private void ButtonDel_Click(object sender, RoutedEventArgs e)
+        {
+            //if (!isErrorInput)
+            //{
+            //    //当操作数正在输入时，delete按钮才能按
+            //    if (operNumClicking)
+            //    {
+            //        ResultTextBlockStr = ResultTextBlock.Text;
+
+            //        //当结果框的字符串只有一位时，将其设为0
+            //        if (ResultTextBlockStr.Length == 1)
+            //        {
+            //            ResultTextBlock.Text = "0";
+            //            operNumClicking = false;
+            //        }
+            //        else
+            //        {
+            //            ResultTextBlock.Text = ResultTextBlockStr.Substring(0, ResultTextBlockStr.Length - 1);
+            //        }
+            //    }
+            //}
+        }
     }
 }
