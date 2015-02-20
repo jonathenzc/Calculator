@@ -58,8 +58,8 @@
         <Button x:Name="ButtonPi" Grid.Row="2" Grid.Column="7" Content="π"  Style="{StaticResource OperSymbolButton}" Click="ButtonPi_Click"></Button>
         <Button x:Name="ButtonDel" Grid.Row="2" Grid.Column="9" Content="⇦"  Style="{StaticResource OperSymbolButton}" Click="ButtonDel_Click"></Button>
         <Button x:Name="ButtonClear" Grid.Row="2" Grid.Column="11" Content="C" Style="{StaticResource OperSymbolButton}"  Click="ButtonClear_Click"></Button>
-        <Button x:Name="ButtonPosiNega" Grid.Row="2" Grid.Column="13" Content="±" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
-        <Button x:Name="ButtonSqrt" Grid.Row="2" Grid.Column="15" Content="√" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonPosiNega" Grid.Row="2" Grid.Column="13" Content="±" Style="{StaticResource OperSymbolButton}"  Click="ButtonPosiNege_Click"></Button>
+        <Button x:Name="ButtonSqrt" Grid.Row="2" Grid.Column="15" Content="√" Style="{StaticResource OperSymbolButton}"  Click="ButtonSqrt_Click"></Button>
         
         <!--第二行-->
         <Button x:Name="ButtonSin" Grid.Row="3" Grid.Column="1" Content="sin" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
@@ -79,7 +79,7 @@
         <Button x:Name="Button5" Grid.Row="4" Grid.Column="9" Content="5" Style="{StaticResource OperNumButton}"  Click="Button5_Click"></Button>
         <Button x:Name="Button6" Grid.Row="4" Grid.Column="11" Content="6" Style="{StaticResource OperNumButton}"  Click="Button6_Click"></Button>
         <Button x:Name="ButtonMultiply" Grid.Row="4" Grid.Column="13" Content="*" Style="{StaticResource OperSymbolButton}"  Click="ButtonMultiply_Click"></Button>
-        <Button x:Name="ButtonFraction" Grid.Row="4" Grid.Column="15" Content="1/x" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonFraction" Grid.Row="4" Grid.Column="15" Content="1/x" Style="{StaticResource OperSymbolButton}"  Click="ButtonFraction_Click"></Button>
 
         <!--第四行-->
         <Button x:Name="ButtonSquare" Grid.Row="5" Grid.Column="1" Content="x^2" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
@@ -89,7 +89,7 @@
         <Button x:Name="Button2" Grid.Row="5" Grid.Column="9" Content="2" Style="{StaticResource OperNumButton}"  Click="Button2_Click"></Button>
         <Button x:Name="Button3" Grid.Row="5" Grid.Column="11" Content="3" Style="{StaticResource OperNumButton}"  Click="Button3_Click"></Button>
         <Button x:Name="ButtonMinus" Grid.Row="5" Grid.Column="13" Content="-" Style="{StaticResource OperSymbolButton}"  Click="ButtonMinus_Click"></Button>
-        <Button x:Name="ButtonEqual" Grid.Row="5" Grid.Column="15" Content="=" Grid.RowSpan="2" Style="{StaticResource OperSymbolButton}" Background="{ThemeResource ButtonPressedBackgroundThemeBrush}" Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonEqual" Grid.Row="5" Grid.Column="15" Content="=" Grid.RowSpan="2" Style="{StaticResource OperSymbolButton}" Background="{ThemeResource ButtonPressedBackgroundThemeBrush}" Click="ButtonEqual_Click"></Button>
 
         <!--第五行-->
         <Button x:Name="ButtonFact" Grid.Row="6" Grid.Column="1" Content="n!" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>

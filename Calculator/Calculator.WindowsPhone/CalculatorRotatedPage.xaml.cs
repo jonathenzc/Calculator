@@ -370,9 +370,219 @@ namespace Calculator
             return resultStr;
         }
 
+        //单运算符按钮事件，包括根号、正负号、分号
+        private void ButtonSqrt_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isErrorInput)
+            {
+                operNumClicking = false;
+                fractionClickCnt = 0;
+                sqrtClickCnt++;
+                ResultTextBlockStr = ResultTextBlock.Text;
+                ProgressTextBlockStr = ProgressTextBlock.Text;
+
+                if (ResultTextBlockStr[0] != '-' && ResultTextBlockStr != "无效输入")
+                {
+                    //第一次按根号按钮得到该数
+                    if (sqrtClickCnt == 1)
+                    {
+                        basicDouble = double.Parse(ResultTextBlockStr);
+                        ProgressTextBlockStr = basicDouble.ToString();
+                    }
+
+                    char[] basicSymbolArray = new char[] { '+', '-', '*', '/', '%' };
+
+                    //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加sqrt
+                    if (ProgressTextBlock.Text.IndexOf("s") == 0 || (!basicSymbolClicked && sqrtClickCnt == 1))
+                    {
+                        //显示过程框的内容
+                        if (ProgressTextBlock.Text.IndexOfAny(basicSymbolArray) != -1)//过程框中有运算过程且有运算符号
+                            ProgressTextBlock.Text += "sqrt(" + ResultTextBlockStr + ")";
+                        else
+                            ProgressTextBlock.Text = "sqrt(" + ProgressTextBlockStr + ")";
+                    }
+                    else
+                    {
+                        ProgressTextBlockStr = ProgressTextBlock.Text;
+                        int lastBasicSymbolIndex = ProgressTextBlockStr.LastIndexOfAny(basicSymbolArray);
+
+                        //获取之前的过程字符串和基数字符串
+                        //处理这样的操作:98 + sqrt(98)，当再触发该分号按钮后，变成98 + sqrt(sqrt(98))
+                        //处理1+2+和1+后按根号的情况
+                        string baseNumberStr = "";
+                        int firstBasicSymbolIndex = ProgressTextBlockStr.IndexOfAny(basicSymbolArray);
+
+                        if (firstBasicSymbolIndex == lastBasicSymbolIndex)//1+
+                            baseNumberStr = ProgressTextBlockStr.Substring(0, lastBasicSymbolIndex - 1);
+                        else//1+2+
+                            baseNumberStr = ResultTextBlock.Text;
+
+                        string previousProgressStr = ProgressTextBlockStr.Substring(0, lastBasicSymbolIndex + 1);
+                        string sqrtStr = "";
+
+                        if (lastBasicSymbolIndex + 2 < ProgressTextBlockStr.Length)//第一次按根号，如字符串ProgressTextBlockStr为"98 +"
+                            sqrtStr = " sqrt(" + ProgressTextBlockStr.Substring(lastBasicSymbolIndex + 2) + ")";
+                        else
+                            sqrtStr = " sqrt(" + baseNumberStr + ")";
+
+                        ProgressTextBlock.Text = previousProgressStr + sqrtStr;
+                    }
+
+                    //显示当前结果框的内容
+                    basicDouble = double.Parse(ResultTextBlockStr);
+                    itsSqrt = System.Math.Sqrt(basicDouble);
+                    ResultTextBlock.Text = itsSqrt.ToString();
+                    basicSymbolClicked = false;
+                }
+                else
+                {
+                    ResultTextBlock.FontSize = 50;
+                    ResultTextBlock.Text = "无效输入";
+                    isErrorInput = true;
+                }
+            }
+        }
+
+        private void ButtonFraction_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isErrorInput)
+            {
+                operNumClicking = false;
+
+                fractionClickCnt++;
+                ResultTextBlockStr = ResultTextBlock.Text;
+                ProgressTextBlockStr = ProgressTextBlock.Text;
+
+                if (ResultTextBlockStr != "0" && ResultTextBlockStr != "除数不能为0")
+                {
+                    //第一次按分数按钮得到该数的分数
+                    if (fractionClickCnt == 1)
+                    {
+                        basicDouble = double.Parse(ResultTextBlockStr);
+                        ProgressTextBlockStr = basicDouble.ToString();
+                    }
+
+                    char[] basicSymbolArray = new char[] { '+', '-', '*', '/', '%' };
+
+                    //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加reciproc
+                    if (ProgressTextBlock.Text.IndexOf("r") == 0 || (!basicSymbolClicked && fractionClickCnt == 1))
+                    {
+                        //显示过程框的内容
+                        if (ProgressTextBlock.Text.IndexOfAny(basicSymbolArray) != -1)//过程框中有运算过程且有运算符号
+                            ProgressTextBlock.Text += "reciproc(" + ResultTextBlockStr + ")";
+                        else
+                            ProgressTextBlock.Text = "reciproc(" + ProgressTextBlockStr + ")";
+                    }
+                    else
+                    {
+                        ProgressTextBlockStr = ProgressTextBlock.Text;
+                        int lastBasicSymbolIndex = ProgressTextBlockStr.LastIndexOfAny(basicSymbolArray);
+
+                        //获取之前的过程字符串和基数字符串
+                        //处理这样的操作:98 + reciproc(98)，当再触发该分号按钮后，变成98 + reciproc(reciproc(98))
+                        string baseNumberStr = "";
+                        int firstBasicSymbolIndex = ProgressTextBlockStr.IndexOfAny(basicSymbolArray);
+
+                        if (firstBasicSymbolIndex == lastBasicSymbolIndex)//1+
+                            baseNumberStr = ProgressTextBlockStr.Substring(0, lastBasicSymbolIndex - 1);
+                        else//1+2+
+                            baseNumberStr = ResultTextBlock.Text;
+
+                        string previousProgressStr = ProgressTextBlockStr.Substring(0, lastBasicSymbolIndex + 1);
+                        string reciprocStr = "";
+
+                        if (lastBasicSymbolIndex + 2 < ProgressTextBlockStr.Length)//第一次按分号，如字符串ProgressTextBlockStr为"98 +"
+                            reciprocStr = " reciproc(" + ProgressTextBlockStr.Substring(lastBasicSymbolIndex + 2) + ")";
+                        else
+                            reciprocStr = " reciproc(" + baseNumberStr + ")";
+
+                        ProgressTextBlock.Text = previousProgressStr + reciprocStr;
+                    }
+
+                    //显示当前结果框的内容
+                    itsFraction = 1.0 / basicDouble;
+
+                    if (fractionClickCnt % 2 == 1)
+                        ResultTextBlock.Text = itsFraction.ToString();
+                    else
+                        ResultTextBlock.Text = basicDouble.ToString();
+
+                    basicSymbolClicked = false;
+                }
+                else
+                {
+                    ResultTextBlock.FontSize = 50;
+                    ResultTextBlock.Text = "除数不能为0";
+                    isErrorInput = true;
+                }
+            }
+        }
+
+        private void ButtonPosiNege_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isErrorInput)
+            {
+                operNumClicking = false;
+
+                ResultTextBlockStr = ResultTextBlock.Text;
+                ProgressTextBlockStr = ProgressTextBlock.Text;
+
+                //结果框若为0，没有正负号
+                if (ResultTextBlockStr != "0")
+                {
+                    //加减乘除Mod基本运算按钮触发后，需要处理过程框中的运算过程
+                    if (basicSymbolClicked)
+                    {
+                        char[] basicSymbolArray = new char[] { '+', '-', '*', '/', 'M' };
+                        int basicSymbolIndex = ProgressTextBlockStr.IndexOfAny(basicSymbolArray);
+
+                        //获取之前的过程字符串和基数字符串
+                        //处理这样的操作:98 + -(98)，当再触发该正负号按钮后，变成98 + -(-(98))
+                        string baseNumberStr = ProgressTextBlockStr.Substring(0, basicSymbolIndex - 1);
+                        string previousProgressStr = ProgressTextBlockStr.Substring(0, basicSymbolIndex + 1);
+                        string negativeStr = "";
+
+                        if (basicSymbolIndex + 2 < ProgressTextBlockStr.Length)//第一次按正负号，如字符串ProgressTextBlockStr为"98 +"
+                            negativeStr = " -(" + ProgressTextBlockStr.Substring(basicSymbolIndex + 2) + ")";
+                        else
+                            negativeStr = " -(" + baseNumberStr + ")";
+
+                        ProgressTextBlock.Text = previousProgressStr + negativeStr;
+                    }
+
+                    //对结果框的结果添加正负号
+                    if (ResultTextBlockStr.Contains("-"))
+                        ResultTextBlock.Text = ResultTextBlockStr.Substring(1);
+                    else
+                        ResultTextBlock.Text = "-" + ResultTextBlockStr;
+                }
+            }
+        }
+
+        //等号按钮
+        private void ButtonEqual_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isErrorInput && operSymbol != "")
+            {
+                equalClicked = true;//等号已经按下
+                operNum2 = double.Parse(ResultTextBlock.Text);
+
+                ResultTextBlock.Text = Equal(operNum1, operSymbol, operNum2);
+
+                //等号的话过程框可以清空
+                ProgressTextBlock.Text = "";
+
+                //初始化一些变量
+                sqrtClickCnt = 0;
+                basicSymbolClicked = false;
+            }
+        }
+
         private void ButtonPi_Click(object sender, RoutedEventArgs e)
         {
             ResultTextBlock.Text = "3.14159265358979323846";
         }
+
+
     }
 }
