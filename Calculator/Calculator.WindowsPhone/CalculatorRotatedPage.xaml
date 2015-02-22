@@ -12,7 +12,7 @@
         <!-- 定义7行 比例分别为1:1.5:1:1:1:1:1-->
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="1.5*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -46,8 +46,8 @@
         
         <!-- 结果框-->
         <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="15">
-            <TextBlock x:Name="ProgressTextBlock" Height="20" FontSize="20" TextAlignment="Right" ></TextBlock>
-            <TextBlock x:Name="ResultTextBlock"  Height="50" FontSize="50" TextAlignment="Right" >0</TextBlock>
+            <TextBlock x:Name="ProgressTextBlock" Height="30" FontSize="25" TextAlignment="Right" ></TextBlock>
+            <TextBlock x:Name="ResultTextBlock"  Height="60" FontSize="60" TextAlignment="Right" >0</TextBlock>
         </StackPanel>
 
         <!--按钮块 切分成5*9块-->

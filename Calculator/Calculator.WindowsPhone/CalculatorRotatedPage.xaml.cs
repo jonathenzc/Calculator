@@ -54,9 +54,30 @@ namespace Calculator
         private double itsSqrt;
         private int sqrtClickCnt;//根号按钮点击次数
 
+        //ln辅助变量
+        private int lnClickCnt; //ln按钮点击次数
+
+        //log辅助变量
+        private int logClickCnt;//log按钮点击次数
+
         public CalculatorRotatedPage()
         {
             this.InitializeComponent();
+
+            this.NavigationCacheMode = NavigationCacheMode.Required;
+
+            basicSymbolClicked = false;
+            operNumClicking = false;
+            equalClicked = false;
+            isErrorInput = false;
+            basicDouble = 0;
+            ResultTextBlockStr = "";
+            ProgressTextBlockStr = "";
+            itsFraction = 0;
+            fractionClickCnt = 0;
+            operSymbol = "";
+            lnClickCnt = 0;
+            logClickCnt = 0;
 
             sensor = SimpleOrientationSensor.GetDefault();
             // Assign an event handler for the sensor orientation-changed event
@@ -133,6 +154,9 @@ namespace Calculator
             sqrtClickCnt = 0;
             itsSqrt = 0;
             operSymbol = "";
+
+            lnClickCnt = 0;
+            logClickCnt = 0;
         }
 
         //数字按钮事件（包括小数点）
@@ -374,12 +398,12 @@ namespace Calculator
         //单运算符按钮事件，包括根号、正负号、分号
         private void ButtonSqrt_Click(object sender, RoutedEventArgs e)
         {
-            UniOperSymbolHelper("s");
+            UniOperSymbolHelper("sqrt");
         }
 
         private void ButtonFraction_Click(object sender, RoutedEventArgs e)
         {
-            UniOperSymbolHelper("f");
+            UniOperSymbolHelper("reciproc");
         }
 
         private void ButtonPosiNege_Click(object sender, RoutedEventArgs e)
@@ -460,13 +484,17 @@ namespace Calculator
         {
             operNumClicking = false;
 
-            if (uniOperSymbol == "s")
+            if (uniOperSymbol[0] == 's')//sqrt
             {
                 sqrtClickCnt++;
                 fractionClickCnt = 0;
             }
-            else if (uniOperSymbol == "f")
+            else if (uniOperSymbol[0] == 'r')//reciproc
                 fractionClickCnt++;
+            else if (uniOperSymbol[1] == 'n')//ln
+                lnClickCnt++;
+            else if (uniOperSymbol[1] == 'o')//log
+                logClickCnt++;
 
             ResultTextBlockStr = ResultTextBlock.Text;
             ProgressTextBlockStr = ProgressTextBlock.Text;
@@ -475,7 +503,7 @@ namespace Calculator
         //单源运算符的判断分支助手，由过程框助手、结果框助手、其他分支助手
         private void JudgementHelper(String uniOperSymbol)
         {
-            if (uniOperSymbol == "s")
+            if (uniOperSymbol[0] == 's')//sqrt
             {
                 if (ResultTextBlockStr[0] != '-' && ResultTextBlockStr != "无效输入")
                 {
@@ -505,7 +533,7 @@ namespace Calculator
                 }
 
             }
-            else if (uniOperSymbol == "f")
+            else if (uniOperSymbol[0] == 'r')//reciproc
             {
                 if (ResultTextBlockStr != "0" && ResultTextBlockStr != "除数不能为0")
                 {
@@ -534,37 +562,56 @@ namespace Calculator
                     isErrorInput = true;
                 }
             }
+            else if (uniOperSymbol[0] == 'l')//ln
+            {
+                if (ResultTextBlockStr[0] != '-' && ResultTextBlockStr != "0" && ResultTextBlockStr != "无效输入")
+                {
+                    //第一次按ln或者log按钮得到该数的分数
+                    if (lnClickCnt == 1 || logClickCnt == 1)
+                    {
+                        basicDouble = double.Parse(ResultTextBlockStr);
+                        ProgressTextBlockStr = basicDouble.ToString();
+                    }
+                    //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加ln或log
+                    if (ProgressTextBlock.Text.IndexOf("l") == 0 || (!basicSymbolClicked && (lnClickCnt == 1 || logClickCnt == 1)))
+                    {
+                        //显示过程框内容
+                        ShowProgressBlockText(uniOperSymbol);
+                    }
+                    else
+                        ElseHelper(uniOperSymbol);
+
+                    //显示结果框内容
+                    ShowResultBlockText(uniOperSymbol);
+                }
+                else
+                {
+                    ResultTextBlock.FontSize = 50;
+                    ResultTextBlock.Text = "无效输入";
+                    isErrorInput = true;
+                }
+            }
         }
 
         //显示过程框的内容
         private void ShowProgressBlockText(string uniOperSymbol)
         {
             if (ProgressTextBlock.Text.IndexOfAny(basicSymbolArray) != -1)//过程框中有运算过程且有运算符号
-            {
-                if (uniOperSymbol == "s")
-                    ProgressTextBlock.Text += "sqrt(" + ResultTextBlockStr + ")";
-                else if (uniOperSymbol == "f")
-                    ProgressTextBlock.Text += "reciproc(" + ResultTextBlockStr + ")";
-            }
+                ProgressTextBlock.Text += uniOperSymbol+ "(" + ResultTextBlockStr + ")";
             else
-            {
-                if (uniOperSymbol == "s")
-                    ProgressTextBlock.Text = "sqrt(" + ProgressTextBlockStr + ")";
-                else if (uniOperSymbol == "f")
-                    ProgressTextBlock.Text = "reciproc(" + ProgressTextBlockStr + ")";
-            }
+                ProgressTextBlock.Text = uniOperSymbol+"(" + ProgressTextBlockStr + ")";
         }
 
         //显示当前结果框内容
         private void ShowResultBlockText(String uniOperSymbol)
         {
-            if (uniOperSymbol == "s")
+            if (uniOperSymbol[0] == 's')//sqrt
             {
                 basicDouble = double.Parse(ResultTextBlockStr);
                 itsSqrt = System.Math.Sqrt(basicDouble);
                 ResultTextBlock.Text = itsSqrt.ToString();
             }
-            else if (uniOperSymbol == "f")
+            else if (uniOperSymbol[0] == 'r')//reciproc
             {
                 itsFraction = 1.0 / basicDouble;
 
@@ -572,6 +619,16 @@ namespace Calculator
                     ResultTextBlock.Text = itsFraction.ToString();
                 else
                     ResultTextBlock.Text = basicDouble.ToString();
+            }
+            else if(uniOperSymbol[1] == 'n')//ln
+            {
+                basicDouble = double.Parse(ResultTextBlockStr);
+                ResultTextBlock.Text = System.Math.Log(basicDouble).ToString();
+            }
+            else if (uniOperSymbol[1] == 'o')//log
+            {
+                basicDouble = double.Parse(ResultTextBlockStr);
+                ResultTextBlock.Text = System.Math.Log(basicDouble,10).ToString();
             }
 
             basicSymbolClicked = false;
@@ -597,19 +654,9 @@ namespace Calculator
             string uniStr = "";
 
             if (lastBasicSymbolIndex + 2 < ProgressTextBlockStr.Length)//第一次按分号，如字符串ProgressTextBlockStr为"98 +"
-            {
-                if (uniOperSymbol == "s")
-                    uniStr = " sqrt(" + ProgressTextBlockStr.Substring(lastBasicSymbolIndex + 2) + ")";
-                else if (uniOperSymbol == "f")
-                    uniStr = " reciproc(" + ProgressTextBlockStr.Substring(lastBasicSymbolIndex + 2) + ")";
-            }
+                uniStr = " " + uniOperSymbol + "(" + ProgressTextBlockStr.Substring(lastBasicSymbolIndex + 2) + ")";
             else
-            {
-                if(uniOperSymbol == "s")
-                    uniStr = " sqrt(" + baseNumberStr + ")";
-                else if(uniOperSymbol == "f")
-                    uniStr = " reciproc(" + baseNumberStr + ")";
-            }
+                uniStr = " " + uniOperSymbol + "(" + baseNumberStr + ")";
 
             ProgressTextBlock.Text = previousProgressStr + uniStr;
         }
@@ -621,12 +668,12 @@ namespace Calculator
 
         private void ButtonLn_Click(object sender, RoutedEventArgs e)
         {
-
+            UniOperSymbolHelper("ln");
         }
 
         private void ButtonLog_Click(object sender, RoutedEventArgs e)
         {
-
+            UniOperSymbolHelper("log");
         }
 
 
