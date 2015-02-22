@@ -52,8 +52,8 @@
 
         <!--按钮块 切分成5*9块-->
         <!--第一行-->
-        <Button x:Name="ButtonLn" Grid.Row="2" Grid.Column="1" Content="ln" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
-        <Button x:Name="ButtonLogTen" Grid.Row="2" Grid.Column="3" Content="log" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonLn" Grid.Row="2" Grid.Column="1" Content="ln" Style="{StaticResource OperSymbolButton}"  Click="ButtonLn_Click"></Button>
+        <Button x:Name="ButtonLogTen" Grid.Row="2" Grid.Column="3" Content="log" Style="{StaticResource OperSymbolButton}"  Click="ButtonLog_Click"></Button>
         <Button x:Name="ButtonTenX" Grid.Row="2" Grid.Column="5" Content="10^x" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
         <Button x:Name="ButtonPi" Grid.Row="2" Grid.Column="7" Content="π"  Style="{StaticResource OperSymbolButton}" Click="ButtonPi_Click"></Button>
         <Button x:Name="ButtonDel" Grid.Row="2" Grid.Column="9" Content="⇦"  Style="{StaticResource OperSymbolButton}" Click="ButtonDel_Click"></Button>
