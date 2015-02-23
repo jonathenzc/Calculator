@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Devices.Sensors;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -95,7 +96,7 @@ namespace Calculator
                 // 当未还原导航堆栈时，导航到第一页，
                 // 并通过将所需信息作为导航参数传入来配置
                 // 参数
-                if (!rootFrame.Navigate(typeof(CalculatorPage), e.Arguments))
+                if (!rootFrame.Navigate(typeof(CalculatorPage), e))
                 {
                     throw new Exception("Failed to create initial page");
                 }

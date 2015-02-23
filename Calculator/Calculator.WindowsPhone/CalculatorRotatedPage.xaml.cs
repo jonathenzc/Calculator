@@ -60,6 +60,18 @@ namespace Calculator
         //log辅助变量
         private int logClickCnt;//log按钮点击次数
 
+        //powten辅助变量
+        private int powtenClickCnt;//10^x按钮点击次数
+
+        //sin辅助变量
+        private int sinClickCnt;//sind按钮点击次数
+
+        //cos辅助变量
+        private int cosClickCnt;//cosd按钮点击次数
+
+        //tan辅助变量
+        private int tanClickCnt;//tand按钮点击次数
+
         public CalculatorRotatedPage()
         {
             this.InitializeComponent();
@@ -76,8 +88,13 @@ namespace Calculator
             itsFraction = 0;
             fractionClickCnt = 0;
             operSymbol = "";
+            
             lnClickCnt = 0;
             logClickCnt = 0;
+            powtenClickCnt = 0;
+            sinClickCnt = 0;
+            cosClickCnt = 0;
+            tanClickCnt = 0;
 
             sensor = SimpleOrientationSensor.GetDefault();
             // Assign an event handler for the sensor orientation-changed event
@@ -157,6 +174,10 @@ namespace Calculator
 
             lnClickCnt = 0;
             logClickCnt = 0;
+            powtenClickCnt = 0;
+            sinClickCnt = 0;
+            cosClickCnt = 0;
+            tanClickCnt = 0;
         }
 
         //数字按钮事件（包括小数点）
@@ -484,7 +505,7 @@ namespace Calculator
         {
             operNumClicking = false;
 
-            if (uniOperSymbol[0] == 's')//sqrt
+            if (uniOperSymbol == "sqrt")//sqrt
             {
                 sqrtClickCnt++;
                 fractionClickCnt = 0;
@@ -493,8 +514,16 @@ namespace Calculator
                 fractionClickCnt++;
             else if (uniOperSymbol[1] == 'n')//ln
                 lnClickCnt++;
-            else if (uniOperSymbol[1] == 'o')//log
+            else if (uniOperSymbol == "log")//log
                 logClickCnt++;
+            else if (uniOperSymbol[0] == 'p')//powten
+                powtenClickCnt++;
+            else if (uniOperSymbol[1] == 'i')//sin
+                sinClickCnt++;
+            else if (uniOperSymbol[0] == 'c')//cos
+                cosClickCnt++;
+            else if (uniOperSymbol[0] == 't')//tan
+                tanClickCnt++;
 
             ResultTextBlockStr = ResultTextBlock.Text;
             ProgressTextBlockStr = ProgressTextBlock.Text;
@@ -503,7 +532,7 @@ namespace Calculator
         //单源运算符的判断分支助手，由过程框助手、结果框助手、其他分支助手
         private void JudgementHelper(String uniOperSymbol)
         {
-            if (uniOperSymbol[0] == 's')//sqrt
+            if (uniOperSymbol == "sqrt")//sqrt
             {
                 if (ResultTextBlockStr[0] != '-' && ResultTextBlockStr != "无效输入")
                 {
@@ -527,7 +556,7 @@ namespace Calculator
                 }
                 else
                 {
-                    ResultTextBlock.FontSize = 50;
+                    ResultTextBlock.FontSize = 60;
                     ResultTextBlock.Text = "无效输入";
                     isErrorInput = true;
                 }
@@ -557,12 +586,12 @@ namespace Calculator
                 }
                 else
                 {
-                    ResultTextBlock.FontSize = 50;
+                    ResultTextBlock.FontSize = 60;
                     ResultTextBlock.Text = "除数不能为0";
                     isErrorInput = true;
                 }
             }
-            else if (uniOperSymbol[0] == 'l')//ln
+            else if (uniOperSymbol[0] == 'l')//ln或者log
             {
                 if (ResultTextBlockStr[0] != '-' && ResultTextBlockStr != "0" && ResultTextBlockStr != "无效输入")
                 {
@@ -586,7 +615,105 @@ namespace Calculator
                 }
                 else
                 {
-                    ResultTextBlock.FontSize = 50;
+                    ResultTextBlock.FontSize = 60;
+                    ResultTextBlock.Text = "无效输入";
+                    isErrorInput = true;
+                }
+            }
+            else if (uniOperSymbol[0] == 'p')//powten
+            {
+                if ( ResultTextBlockStr != "正无穷大")
+                {
+                    //第一次按powten按钮得到该数的分数
+                    if (powtenClickCnt == 1)
+                    {
+                        basicDouble = double.Parse(ResultTextBlockStr);
+                        ProgressTextBlockStr = basicDouble.ToString();
+                    }
+                    //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加powten
+                    if (ProgressTextBlock.Text.IndexOf("p") == 0 || (!basicSymbolClicked && powtenClickCnt == 1))
+                    {
+                        //显示过程框内容
+                        ShowProgressBlockText(uniOperSymbol);
+                    }
+                    else
+                        ElseHelper(uniOperSymbol);
+
+                    //显示结果框内容
+                    ShowResultBlockText(uniOperSymbol);
+                }
+                else
+                {
+                    ResultTextBlock.FontSize = 60;
+                    ResultTextBlock.Text = "正无穷大";
+                    isErrorInput = true;
+                }
+            }
+            else if (uniOperSymbol[1] == 'i')//sin
+            {
+                //第一次按sin按钮得到该数的分数
+                if (sinClickCnt == 1)
+                {
+                    basicDouble = double.Parse(ResultTextBlockStr);
+                    ProgressTextBlockStr = basicDouble.ToString();
+                }
+                //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加sind
+                if (ProgressTextBlock.Text.IndexOf("s") == 0 || (!basicSymbolClicked && sinClickCnt == 1))
+                {
+                    //显示过程框内容
+                    ShowProgressBlockText(uniOperSymbol);
+                }
+                else
+                    ElseHelper(uniOperSymbol);
+
+                //显示结果框内容
+                ShowResultBlockText(uniOperSymbol);
+            }
+            else if (uniOperSymbol[0] == 'c')//cos
+            {
+                //第一次按sin按钮得到该数的分数
+                if (cosClickCnt == 1)
+                {
+                    basicDouble = double.Parse(ResultTextBlockStr);
+                    ProgressTextBlockStr = basicDouble.ToString();
+                }
+                //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加cosd
+                if (ProgressTextBlock.Text.IndexOf("c") == 0 || (!basicSymbolClicked && cosClickCnt == 1))
+                {
+                    //显示过程框内容
+                    ShowProgressBlockText(uniOperSymbol);
+                }
+                else
+                    ElseHelper(uniOperSymbol);
+
+                //显示结果框内容
+                ShowResultBlockText(uniOperSymbol);
+            }
+            else if (uniOperSymbol[0] == 't')//tan
+            {
+                if (isInTanDomain(double.Parse(ResultTextBlockStr)) && ResultTextBlockStr != "无效输入")
+                {
+                    //第一次按tan按钮得到该数的分数
+                    if (tanClickCnt == 1)
+                    {
+                        basicDouble = double.Parse(ResultTextBlockStr);
+                        ProgressTextBlockStr = basicDouble.ToString();
+                    }
+                    //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加tand
+                    if (ProgressTextBlock.Text.IndexOf("t") == 0 || (!basicSymbolClicked && tanClickCnt == 1))
+                    {
+                        //显示过程框内容
+                        ShowProgressBlockText(uniOperSymbol);
+                    }
+                    else
+                        ElseHelper(uniOperSymbol);
+
+                    //显示结果框内容
+                    ShowResultBlockText(uniOperSymbol);
+                }
+                else
+                {
+                    ResultTextBlock.FontSize = 60;
                     ResultTextBlock.Text = "无效输入";
                     isErrorInput = true;
                 }
@@ -605,7 +732,7 @@ namespace Calculator
         //显示当前结果框内容
         private void ShowResultBlockText(String uniOperSymbol)
         {
-            if (uniOperSymbol[0] == 's')//sqrt
+            if (uniOperSymbol == "sqrt")//sqrt
             {
                 basicDouble = double.Parse(ResultTextBlockStr);
                 itsSqrt = System.Math.Sqrt(basicDouble);
@@ -625,10 +752,30 @@ namespace Calculator
                 basicDouble = double.Parse(ResultTextBlockStr);
                 ResultTextBlock.Text = System.Math.Log(basicDouble).ToString();
             }
-            else if (uniOperSymbol[1] == 'o')//log
+            else if (uniOperSymbol == "log")//log
             {
                 basicDouble = double.Parse(ResultTextBlockStr);
                 ResultTextBlock.Text = System.Math.Log(basicDouble,10).ToString();
+            }
+            else if (uniOperSymbol[0] == 'p')//powten
+            {
+                basicDouble = double.Parse(ResultTextBlockStr);
+                ResultTextBlock.Text = System.Math.Pow(10,basicDouble).ToString();
+            }
+            else if (uniOperSymbol[1] == 'i')//sin
+            {
+                basicDouble = double.Parse(ResultTextBlockStr);
+                ResultTextBlock.Text = Math.Round(Math.Sin(Math.PI*(basicDouble/180.0)),9).ToString();
+            }
+            else if (uniOperSymbol[0] == 'c')//cos
+            {
+                basicDouble = double.Parse(ResultTextBlockStr);
+                ResultTextBlock.Text = Math.Round(Math.Cos(Math.PI * (basicDouble / 180.0)), 9).ToString();
+            }
+            else if (uniOperSymbol[0] == 't')//tan
+            {
+                basicDouble = double.Parse(ResultTextBlockStr);
+                ResultTextBlock.Text = Math.Round(Math.Tan(Math.PI * (basicDouble / 180.0)), 9).ToString();
             }
 
             basicSymbolClicked = false;
@@ -661,9 +808,18 @@ namespace Calculator
             ProgressTextBlock.Text = previousProgressStr + uniStr;
         }
 
+        //tan判断助手,tan的定义域为x≠kπ+π/2
+        private bool isInTanDomain(double num)
+        {
+            if ((num - 90) % 180 != 0)
+                return true;
+            else
+                return false;
+        }
+
         private void ButtonPi_Click(object sender, RoutedEventArgs e)
         {
-            ResultTextBlock.Text = "3.14159265358979323846";
+            ResultTextBlock.Text = System.Math.PI.ToString();//"3.14159265358979323846"
         }
 
         private void ButtonLn_Click(object sender, RoutedEventArgs e)
@@ -674,6 +830,26 @@ namespace Calculator
         private void ButtonLog_Click(object sender, RoutedEventArgs e)
         {
             UniOperSymbolHelper("log");
+        }
+
+        private void ButtonPowTen_Click(object sender, RoutedEventArgs e)
+        {
+            UniOperSymbolHelper("powten");
+        }
+
+        private void ButtonSin_Click(object sender, RoutedEventArgs e)
+        {
+            UniOperSymbolHelper("sind");
+        }
+
+        private void ButtonCos_Click(object sender, RoutedEventArgs e)
+        {
+            UniOperSymbolHelper("cosd");
+        }
+
+        private void ButtonTan_Click(object sender, RoutedEventArgs e)
+        {
+            UniOperSymbolHelper("tand");
         }
 
 

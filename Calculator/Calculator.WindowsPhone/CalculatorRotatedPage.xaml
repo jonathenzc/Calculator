@@ -54,7 +54,7 @@
         <!--第一行-->
         <Button x:Name="ButtonLn" Grid.Row="2" Grid.Column="1" Content="ln" Style="{StaticResource OperSymbolButton}"  Click="ButtonLn_Click"></Button>
         <Button x:Name="ButtonLogTen" Grid.Row="2" Grid.Column="3" Content="log" Style="{StaticResource OperSymbolButton}"  Click="ButtonLog_Click"></Button>
-        <Button x:Name="ButtonTenX" Grid.Row="2" Grid.Column="5" Content="10^x" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonTenX" Grid.Row="2" Grid.Column="5" Content="10^x" Style="{StaticResource OperSymbolButton}"  Click="ButtonPowTen_Click"></Button>
         <Button x:Name="ButtonPi" Grid.Row="2" Grid.Column="7" Content="π"  Style="{StaticResource OperSymbolButton}" Click="ButtonPi_Click"></Button>
         <Button x:Name="ButtonDel" Grid.Row="2" Grid.Column="9" Content="⇦"  Style="{StaticResource OperSymbolButton}" Click="ButtonDel_Click"></Button>
         <Button x:Name="ButtonClear" Grid.Row="2" Grid.Column="11" Content="C" Style="{StaticResource OperSymbolButton}"  Click="ButtonClear_Click"></Button>
@@ -62,9 +62,9 @@
         <Button x:Name="ButtonSqrt" Grid.Row="2" Grid.Column="15" Content="√" Style="{StaticResource OperSymbolButton}"  Click="ButtonSqrt_Click"></Button>
         
         <!--第二行-->
-        <Button x:Name="ButtonSin" Grid.Row="3" Grid.Column="1" Content="sin" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
-        <Button x:Name="ButtonCos" Grid.Row="3" Grid.Column="3" Content="cos" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
-        <Button x:Name="ButtonTan" Grid.Row="3" Grid.Column="5" Content="tan" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonSin" Grid.Row="3" Grid.Column="1" Content="sin" Style="{StaticResource OperSymbolButton}"  Click="ButtonSin_Click"></Button>
+        <Button x:Name="ButtonCos" Grid.Row="3" Grid.Column="3" Content="cos" Style="{StaticResource OperSymbolButton}"  Click="ButtonCos_Click"></Button>
+        <Button x:Name="ButtonTan" Grid.Row="3" Grid.Column="5" Content="tan" Style="{StaticResource OperSymbolButton}"  Click="ButtonTan_Click"></Button>
         <Button x:Name="Button7" Grid.Row="3" Grid.Column="7" Content="7" Style="{StaticResource OperNumButton}"  Click="Button7_Click"></Button>
         <Button x:Name="Button8" Grid.Row="3" Grid.Column="9" Content="8" Style="{StaticResource OperNumButton}"  Click="Button8_Click"></Button>
         <Button x:Name="Button9" Grid.Row="3" Grid.Column="11" Content="9" Style="{StaticResource OperNumButton}"  Click="Button9_Click"></Button>
