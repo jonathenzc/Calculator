@@ -72,6 +72,9 @@ namespace Calculator
         //tan辅助变量
         private int tanClickCnt;//tand按钮点击次数
 
+        //asind辅助变量
+        private int asindClickCnt;//asind按钮点击次数
+
         public CalculatorRotatedPage()
         {
             this.InitializeComponent();
@@ -95,6 +98,7 @@ namespace Calculator
             sinClickCnt = 0;
             cosClickCnt = 0;
             tanClickCnt = 0;
+            asindClickCnt = 0;
 
             sensor = SimpleOrientationSensor.GetDefault();
             // Assign an event handler for the sensor orientation-changed event
@@ -178,6 +182,7 @@ namespace Calculator
             sinClickCnt = 0;
             cosClickCnt = 0;
             tanClickCnt = 0;
+            asindClickCnt = 0;
         }
 
         //数字按钮事件（包括小数点）
@@ -524,6 +529,8 @@ namespace Calculator
                 cosClickCnt++;
             else if (uniOperSymbol[0] == 't')//tan
                 tanClickCnt++;
+            else if (uniOperSymbol == "asind")//asind
+                asindClickCnt++;
 
             ResultTextBlockStr = ResultTextBlock.Text;
             ProgressTextBlockStr = ProgressTextBlock.Text;
@@ -718,6 +725,35 @@ namespace Calculator
                     isErrorInput = true;
                 }
             }
+            else if (uniOperSymbol == "asind")//asind
+            {
+                if (isInArcSinDomain(double.Parse(ResultTextBlockStr)) && ResultTextBlockStr != "无效输入")
+                {
+                    //第一次按asin按钮得到该数的分数
+                    if (asindClickCnt == 1)
+                    {
+                        basicDouble = double.Parse(ResultTextBlockStr);
+                        ProgressTextBlockStr = basicDouble.ToString();
+                    }
+                    //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加asind
+                    if (ProgressTextBlock.Text.IndexOf("a") == 0 || (!basicSymbolClicked && asindClickCnt == 1))
+                    {
+                        //显示过程框内容
+                        ShowProgressBlockText(uniOperSymbol);
+                    }
+                    else
+                        ElseHelper(uniOperSymbol);
+
+                    //显示结果框内容
+                    ShowResultBlockText(uniOperSymbol);
+                }
+                else
+                {
+                    ResultTextBlock.FontSize = 60;
+                    ResultTextBlock.Text = "无效输入";
+                    isErrorInput = true;
+                }
+            }
         }
 
         //显示过程框的内容
@@ -777,6 +813,12 @@ namespace Calculator
                 basicDouble = double.Parse(ResultTextBlockStr);
                 ResultTextBlock.Text = Math.Round(Math.Tan(Math.PI * (basicDouble / 180.0)), 9).ToString();
             }
+            else if (uniOperSymbol == "asind")//asind
+            {
+                basicDouble = double.Parse(ResultTextBlockStr);
+                ResultTextBlock.Text = Math.Round(180*Math.Asin(basicDouble)/Math.PI).ToString();
+            }
+
 
             basicSymbolClicked = false;
         }
@@ -817,6 +859,15 @@ namespace Calculator
                 return false;
         }
 
+        //反三角函数判断助手，asind的定义域为[-1,1]
+        private bool isInArcSinDomain(double num)
+        {
+            if (num >= -1 && num <= 1)
+                return true;
+            else
+                return false;
+        }
+
         private void ButtonPi_Click(object sender, RoutedEventArgs e)
         {
             ResultTextBlock.Text = System.Math.PI.ToString();//"3.14159265358979323846"
@@ -850,6 +901,31 @@ namespace Calculator
         private void ButtonTan_Click(object sender, RoutedEventArgs e)
         {
             UniOperSymbolHelper("tand");
+        }
+
+        private void ButtonSinh_Click(object sender, RoutedEventArgs e)
+        {
+            UniOperSymbolHelper("asind");
+        }
+
+        private void ButtonCosh_Click(object sender, RoutedEventArgs e)
+        {
+            UniOperSymbolHelper("acosd");
+        }
+
+        private void ButtonTanh_Click(object sender, RoutedEventArgs e)
+        {
+            UniOperSymbolHelper("atand");
+        }
+
+        private void ButtonSquare_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ButtonCube_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
 
