@@ -81,6 +81,15 @@ namespace Calculator
         //atand辅助变量
         private int atandClickCnt;//atand按钮点击次数
 
+        //sqr辅助变量
+        private int sqrClickCnt;//sqr按钮点击次数
+
+        //cube辅助变量
+        private int cubeClickCnt;//cube按钮点击次数
+
+        //cuberoot辅助变量
+        private int cubeRootClickCnt;//cubeRoot按钮点击次数
+
         public CalculatorRotatedPage()
         {
             this.InitializeComponent();
@@ -95,9 +104,10 @@ namespace Calculator
             ResultTextBlockStr = "";
             ProgressTextBlockStr = "";
             itsFraction = 0;
-            fractionClickCnt = 0;
             operSymbol = "";
             
+            //单元运算符辅助变量
+            fractionClickCnt = 0;
             lnClickCnt = 0;
             logClickCnt = 0;
             powtenClickCnt = 0;
@@ -107,6 +117,9 @@ namespace Calculator
             asindClickCnt = 0;
             acosdClickCnt = 0;
             atandClickCnt = 0;
+            sqrClickCnt = 0;
+            cubeClickCnt = 0;
+            cubeRootClickCnt = 0;
 
             sensor = SimpleOrientationSensor.GetDefault();
             // Assign an event handler for the sensor orientation-changed event
@@ -178,12 +191,13 @@ namespace Calculator
             ResultTextBlockStr = "";
             ProgressTextBlockStr = "";
             itsFraction = 0;
-            fractionClickCnt = 0;
             ResultTextBlock.FontSize = 60;//在进行分数计算时，如果数为0时，不能计算。此时的FontSize位60，这里重新将其设置为初始值
             sqrtClickCnt = 0;
             itsSqrt = 0;
             operSymbol = "";
 
+            //单元运算符辅助变量
+            fractionClickCnt = 0;
             lnClickCnt = 0;
             logClickCnt = 0;
             powtenClickCnt = 0;
@@ -193,6 +207,9 @@ namespace Calculator
             asindClickCnt = 0;
             acosdClickCnt = 0;
             atandClickCnt = 0;
+            sqrClickCnt = 0;
+            cubeClickCnt = 0;
+            cubeRootClickCnt = 0;
         }
 
         //数字按钮事件（包括小数点）
@@ -535,7 +552,7 @@ namespace Calculator
                 powtenClickCnt++;
             else if (uniOperSymbol[1] == 'i')//sin
                 sinClickCnt++;
-            else if (uniOperSymbol[0] == 'c')//cos
+            else if (uniOperSymbol == "cos")//cos
                 cosClickCnt++;
             else if (uniOperSymbol[0] == 't')//tan
                 tanClickCnt++;
@@ -545,6 +562,12 @@ namespace Calculator
                 acosdClickCnt++;
             else if (uniOperSymbol == "atand")//atand
                 atandClickCnt++;
+            else if (uniOperSymbol == "sqr")//sqr
+                sqrClickCnt++;
+            else if (uniOperSymbol == "cube")//cube
+                cubeClickCnt++;
+            else if (uniOperSymbol == "cuberoot")//cubeRoot
+                cubeRootClickCnt++;
 
             ResultTextBlockStr = ResultTextBlock.Text;
             ProgressTextBlockStr = ProgressTextBlock.Text;
@@ -690,7 +713,7 @@ namespace Calculator
                 //显示结果框内容
                 ShowResultBlockText(uniOperSymbol);
             }
-            else if (uniOperSymbol[0] == 'c')//cos
+            else if (uniOperSymbol == "cos")//cos
             {
                 //第一次按sin按钮得到该数的分数
                 if (cosClickCnt == 1)
@@ -788,6 +811,66 @@ namespace Calculator
                 //显示结果框内容
                 ShowResultBlockText(uniOperSymbol);
             }
+            else if (uniOperSymbol == "sqr")//sqr
+            {
+                //第一次按sqr按钮得到该数的分数
+                if (sqrClickCnt == 1)
+                {
+                    basicDouble = double.Parse(ResultTextBlockStr);
+                    ProgressTextBlockStr = basicDouble.ToString();
+                }
+                //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加sqr
+                if (ProgressTextBlock.Text.IndexOf("s") == 0 || (!basicSymbolClicked && sqrClickCnt == 1))
+                {
+                    //显示过程框内容
+                    ShowProgressBlockText(uniOperSymbol);
+                }
+                else
+                    ElseHelper(uniOperSymbol);
+
+                //显示结果框内容
+                ShowResultBlockText(uniOperSymbol);
+            }
+            else if (uniOperSymbol == "cube")//cube
+            {
+                //第一次按cube按钮得到该数的分数
+                if (cubeClickCnt == 1)
+                {
+                    basicDouble = double.Parse(ResultTextBlockStr);
+                    ProgressTextBlockStr = basicDouble.ToString();
+                }
+                //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加cube
+                if (ProgressTextBlock.Text.IndexOf("c") == 0 || (!basicSymbolClicked && cubeClickCnt == 1))
+                {
+                    //显示过程框内容
+                    ShowProgressBlockText(uniOperSymbol);
+                }
+                else
+                    ElseHelper(uniOperSymbol);
+
+                //显示结果框内容
+                ShowResultBlockText(uniOperSymbol);
+            }
+            else if (uniOperSymbol == "cuberoot")//cuberoot
+            {
+                //第一次按cuberoot按钮得到该数的分数
+                if (cubeRootClickCnt == 1)
+                {
+                    basicDouble = double.Parse(ResultTextBlockStr);
+                    ProgressTextBlockStr = basicDouble.ToString();
+                }
+                //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加cuberoot
+                if (ProgressTextBlock.Text.IndexOf("c") == 0 || (!basicSymbolClicked && cubeRootClickCnt == 1))
+                {
+                    //显示过程框内容
+                    ShowProgressBlockText(uniOperSymbol);
+                }
+                else
+                    ElseHelper(uniOperSymbol);
+
+                //显示结果框内容
+                ShowResultBlockText(uniOperSymbol);
+            }
         }
 
         //显示过程框的内容
@@ -837,7 +920,7 @@ namespace Calculator
                 basicDouble = double.Parse(ResultTextBlockStr);
                 ResultTextBlock.Text = Math.Round(Math.Sin(Math.PI*(basicDouble/180.0)),9).ToString();
             }
-            else if (uniOperSymbol[0] == 'c')//cos
+            else if (uniOperSymbol == "cos")//cos
             {
                 basicDouble = double.Parse(ResultTextBlockStr);
                 ResultTextBlock.Text = Math.Round(Math.Cos(Math.PI * (basicDouble / 180.0)), 9).ToString();
@@ -861,6 +944,21 @@ namespace Calculator
             {
                 basicDouble = double.Parse(ResultTextBlockStr);
                 ResultTextBlock.Text = Math.Round(180 * Math.Atan(basicDouble) / Math.PI,9).ToString();
+            }
+            else if (uniOperSymbol == "sqr")//sqr
+            {
+                basicDouble = double.Parse(ResultTextBlockStr);
+                ResultTextBlock.Text = Math.Pow(basicDouble,2).ToString();
+            }
+            else if (uniOperSymbol == "cube")//cube
+            {
+                basicDouble = double.Parse(ResultTextBlockStr);
+                ResultTextBlock.Text = Math.Pow(basicDouble, 3).ToString();
+            }
+            else if (uniOperSymbol == "cuberoot")//cubeRoot
+            {
+                basicDouble = double.Parse(ResultTextBlockStr);
+                ResultTextBlock.Text = Math.Pow(basicDouble, 1.0/3.0).ToString();
             }
 
             basicSymbolClicked = false;
@@ -911,11 +1009,6 @@ namespace Calculator
                 return false;
         }
 
-        private void ButtonPi_Click(object sender, RoutedEventArgs e)
-        {
-            ResultTextBlock.Text = System.Math.PI.ToString();//"3.14159265358979323846"
-        }
-
         private void ButtonLn_Click(object sender, RoutedEventArgs e)
         {
             UniOperSymbolHelper("ln");
@@ -963,14 +1056,28 @@ namespace Calculator
 
         private void ButtonSquare_Click(object sender, RoutedEventArgs e)
         {
-
+            UniOperSymbolHelper("sqr");
         }
 
         private void ButtonCube_Click(object sender, RoutedEventArgs e)
         {
-
+            UniOperSymbolHelper("cube");
         }
 
+        private void ButtonCubeRoot_Click(object sender, RoutedEventArgs e)
+        {
+            UniOperSymbolHelper("cuberoot");
+        }
 
+        //常数按钮
+        private void ButtonE_Click(object sender, RoutedEventArgs e)
+        {
+            ResultTextBlock.Text = System.Math.E.ToString();//"2.71828182845905"
+        }
+
+        private void ButtonPi_Click(object sender, RoutedEventArgs e)
+        {
+            ResultTextBlock.Text = System.Math.PI.ToString();//"3.14159265358979323846"
+        }
     }
 }

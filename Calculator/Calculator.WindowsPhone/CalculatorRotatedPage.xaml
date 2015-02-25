@@ -92,8 +92,8 @@
         <Button x:Name="ButtonEqual" Grid.Row="5" Grid.Column="15" Content="=" Grid.RowSpan="2" Style="{StaticResource OperSymbolButton}" Background="{ThemeResource ButtonPressedBackgroundThemeBrush}" Click="ButtonEqual_Click"></Button>
 
         <!--第五行-->
-        <Button x:Name="ButtonFact" Grid.Row="6" Grid.Column="1" Content="n!" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
-        <Button x:Name="ButtonCubeRoot" Grid.Row="6" Grid.Column="3" Content="3√x" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
+        <Button x:Name="ButtonE" Grid.Row="6" Grid.Column="1" Content="e" Style="{StaticResource OperSymbolButton}"  Click="ButtonE_Click"></Button>
+        <Button x:Name="ButtonCubeRoot" Grid.Row="6" Grid.Column="3" Content="3√x" Style="{StaticResource OperSymbolButton}"  Click="ButtonCubeRoot_Click"></Button>
         <Button x:Name="ButtonYRoot" Grid.Row="6" Grid.Column="5" Content="y√x" Style="{StaticResource OperSymbolButton}"  Click="ButtonDel_Click"></Button>
         <Button x:Name="Button0" Grid.Row="6" Grid.Column="7" Content="0" Grid.ColumnSpan="3" Style="{StaticResource OperNumButton}"  Click="Button0_Click"></Button>
         <Button x:Name="ButtonPoint" Grid.Row="6" Grid.Column="11" Content="." Style="{StaticResource OperNumButton}"  Click="ButtonPoint_Click"></Button>
