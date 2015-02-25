@@ -314,7 +314,7 @@ namespace Calculator
             }
         }
 
-        //基本运算按钮事件，包括加减乘除、mod
+        //基本运算按钮事件，包括加减乘除、mod、x^y、y√x
         private void ButtonSymbolClickHelper(string symbol)
         {
             if (!isErrorInput)
@@ -373,6 +373,7 @@ namespace Calculator
             }
         }
 
+        //二元运算符
         private void ButtonPlus_Click(object sender, RoutedEventArgs e)
         {
             ButtonSymbolClickHelper("+");
@@ -396,6 +397,37 @@ namespace Calculator
         private void ButtonMod_Click(object sender, RoutedEventArgs e)
         {
             ButtonSymbolClickHelper("%");
+        }
+
+        //x^y次方
+        private void ButtonXYSquare_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonSymbolClickHelper("^");
+        }
+
+        //x的y次根
+        private void ButtonXYRoot_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonSymbolClickHelper("yroot");
+        }
+
+        //等号按钮
+        private void ButtonEqual_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isErrorInput && operSymbol != "")
+            {
+                equalClicked = true;//等号已经按下
+                operNum2 = double.Parse(ResultTextBlock.Text);
+
+                ResultTextBlock.Text = Equal(operNum1, operSymbol, operNum2);
+
+                //等号的话过程框可以清空
+                ProgressTextBlock.Text = "";
+
+                //初始化一些变量
+                sqrtClickCnt = 0;
+                basicSymbolClicked = false;
+            }
         }
 
         //输出运算数1和运算数2在运算符下的结果
@@ -441,6 +473,44 @@ namespace Calculator
                 result = num1 % num2;
                 resultStr = result.ToString();
                 operNum1 = result;
+            }
+            else if (symbol == "^")//x^y
+            {
+                if (num1 == 0 && num2 < 0)
+                {
+                    resultStr = "除数不能为0";
+                    isErrorInput = true;
+                }
+                //else if(num1<0 && )//当num1为负数，num2开根的条件不知道如何判断
+                //{
+                //    resultStr = "无效输入";
+                //    isErrorInput = true;
+                //}
+                else//合法输入
+                {
+                    result = Math.Pow(num1,num2);
+                    resultStr = result.ToString();
+                    operNum1 = result;
+                }
+            }
+            else if (symbol == "yroot")//x的y次根
+            {
+                if (num2 == 0 || (num1 == 0 && num2 < 0))
+                {
+                    resultStr = "除数不能为0";
+                    isErrorInput = true;
+                }
+                //else if(num1<0 && )//当num1为负数，num2开根的条件不知道如何判断
+                //{
+                //    resultStr = "无效输入";
+                //    isErrorInput = true;
+                //}
+                else//合法输入
+                {
+                    result = Math.Pow(num1, 1.0/num2);
+                    resultStr = result.ToString();
+                    operNum1 = result;
+                }
             }
             else
                 resultStr = "结果未定义";
@@ -497,25 +567,6 @@ namespace Calculator
                     else
                         ResultTextBlock.Text = "-" + ResultTextBlockStr;
                 }
-            }
-        }
-
-        //等号按钮
-        private void ButtonEqual_Click(object sender, RoutedEventArgs e)
-        {
-            if (!isErrorInput && operSymbol != "")
-            {
-                equalClicked = true;//等号已经按下
-                operNum2 = double.Parse(ResultTextBlock.Text);
-
-                ResultTextBlock.Text = Equal(operNum1, operSymbol, operNum2);
-
-                //等号的话过程框可以清空
-                ProgressTextBlock.Text = "";
-
-                //初始化一些变量
-                sqrtClickCnt = 0;
-                basicSymbolClicked = false;
             }
         }
 
