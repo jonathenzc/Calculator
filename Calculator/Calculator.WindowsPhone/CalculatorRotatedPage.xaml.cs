@@ -75,6 +75,12 @@ namespace Calculator
         //asind辅助变量
         private int asindClickCnt;//asind按钮点击次数
 
+        //acosd辅助变量
+        private int acosdClickCnt;//acosd按钮点击次数
+
+        //atand辅助变量
+        private int atandClickCnt;//atand按钮点击次数
+
         public CalculatorRotatedPage()
         {
             this.InitializeComponent();
@@ -99,6 +105,8 @@ namespace Calculator
             cosClickCnt = 0;
             tanClickCnt = 0;
             asindClickCnt = 0;
+            acosdClickCnt = 0;
+            atandClickCnt = 0;
 
             sensor = SimpleOrientationSensor.GetDefault();
             // Assign an event handler for the sensor orientation-changed event
@@ -171,7 +179,7 @@ namespace Calculator
             ProgressTextBlockStr = "";
             itsFraction = 0;
             fractionClickCnt = 0;
-            ResultTextBlock.FontSize = 50;//在进行分数计算时，如果数为0时，不能计算。此时的FontSize位50，这里重新将其设置为初始值
+            ResultTextBlock.FontSize = 60;//在进行分数计算时，如果数为0时，不能计算。此时的FontSize位60，这里重新将其设置为初始值
             sqrtClickCnt = 0;
             itsSqrt = 0;
             operSymbol = "";
@@ -183,6 +191,8 @@ namespace Calculator
             cosClickCnt = 0;
             tanClickCnt = 0;
             asindClickCnt = 0;
+            acosdClickCnt = 0;
+            atandClickCnt = 0;
         }
 
         //数字按钮事件（包括小数点）
@@ -531,6 +541,10 @@ namespace Calculator
                 tanClickCnt++;
             else if (uniOperSymbol == "asind")//asind
                 asindClickCnt++;
+            else if (uniOperSymbol == "acosd")//acosd
+                acosdClickCnt++;
+            else if (uniOperSymbol == "atand")//atand
+                atandClickCnt++;
 
             ResultTextBlockStr = ResultTextBlock.Text;
             ProgressTextBlockStr = ProgressTextBlock.Text;
@@ -725,18 +739,18 @@ namespace Calculator
                     isErrorInput = true;
                 }
             }
-            else if (uniOperSymbol == "asind")//asind
+            else if (uniOperSymbol == "asind" || uniOperSymbol == "acosd")//asind或者acosd
             {
-                if (isInArcSinDomain(double.Parse(ResultTextBlockStr)) && ResultTextBlockStr != "无效输入")
+                if (isInArcSinOrCosDomain(double.Parse(ResultTextBlockStr)) && ResultTextBlockStr != "无效输入")
                 {
-                    //第一次按asin按钮得到该数的分数
-                    if (asindClickCnt == 1)
+                    //第一次按asin或者acos按钮得到该数的分数
+                    if (asindClickCnt == 1 || acosdClickCnt == 1)
                     {
                         basicDouble = double.Parse(ResultTextBlockStr);
                         ProgressTextBlockStr = basicDouble.ToString();
                     }
-                    //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加asind
-                    if (ProgressTextBlock.Text.IndexOf("a") == 0 || (!basicSymbolClicked && asindClickCnt == 1))
+                    //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加asind或者acosd
+                    if (ProgressTextBlock.Text.IndexOf("a") == 0 || (!basicSymbolClicked && (asindClickCnt == 1 || acosdClickCnt == 1)))
                     {
                         //显示过程框内容
                         ShowProgressBlockText(uniOperSymbol);
@@ -753,6 +767,26 @@ namespace Calculator
                     ResultTextBlock.Text = "无效输入";
                     isErrorInput = true;
                 }
+            }
+            else if (uniOperSymbol == "atand")//atand
+            {
+                //第一次按atan按钮得到该数的分数
+                if (atandClickCnt == 1)
+                {
+                    basicDouble = double.Parse(ResultTextBlockStr);
+                    ProgressTextBlockStr = basicDouble.ToString();
+                }
+                //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加atand
+                if (ProgressTextBlock.Text.IndexOf("a") == 0 || (!basicSymbolClicked && atandClickCnt == 1))
+                {
+                    //显示过程框内容
+                    ShowProgressBlockText(uniOperSymbol);
+                }
+                else
+                    ElseHelper(uniOperSymbol);
+
+                //显示结果框内容
+                ShowResultBlockText(uniOperSymbol);
             }
         }
 
@@ -816,9 +850,18 @@ namespace Calculator
             else if (uniOperSymbol == "asind")//asind
             {
                 basicDouble = double.Parse(ResultTextBlockStr);
-                ResultTextBlock.Text = Math.Round(180*Math.Asin(basicDouble)/Math.PI).ToString();
+                ResultTextBlock.Text = Math.Round(180*Math.Asin(basicDouble)/Math.PI,9).ToString();
             }
-
+            else if (uniOperSymbol == "acosd")//acosd
+            {
+                basicDouble = double.Parse(ResultTextBlockStr);
+                ResultTextBlock.Text = Math.Round(180 * Math.Acos(basicDouble) / Math.PI,9).ToString();
+            }
+            else if (uniOperSymbol == "atand")//atand
+            {
+                basicDouble = double.Parse(ResultTextBlockStr);
+                ResultTextBlock.Text = Math.Round(180 * Math.Atan(basicDouble) / Math.PI,9).ToString();
+            }
 
             basicSymbolClicked = false;
         }
@@ -860,7 +903,7 @@ namespace Calculator
         }
 
         //反三角函数判断助手，asind的定义域为[-1,1]
-        private bool isInArcSinDomain(double num)
+        private bool isInArcSinOrCosDomain(double num)
         {
             if (num >= -1 && num <= 1)
                 return true;
