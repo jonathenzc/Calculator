@@ -332,7 +332,6 @@ namespace Calculator
             if (!isErrorInput)
             {
                 operNumClicking = false;
-                fractionClickCnt = 0;
                 sqrtClickCnt++;
                 ResultTextBlockStr = ResultTextBlock.Text;
                 ProgressTextBlockStr = ProgressTextBlock.Text;
@@ -343,17 +342,21 @@ namespace Calculator
                     if (sqrtClickCnt == 1)
                     {
                         basicDouble = double.Parse(ResultTextBlockStr);
-                        ProgressTextBlockStr = basicDouble.ToString();
+
+                        if (ProgressTextBlock.Text == "")
+                            ProgressTextBlockStr = basicDouble.ToString();
+                        else//按了sqrt后按1/x按钮
+                            ProgressTextBlockStr = ProgressTextBlock.Text;
                     }
 
                     char[] basicSymbolArray = new char[] { '+', '-', '*', '/', '%' };
 
                     //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加sqrt
-                    if (ProgressTextBlock.Text.IndexOf("s") == 0 ||(!basicSymbolClicked && sqrtClickCnt==1))
+                    if (ProgressTextBlock.Text.IndexOf("s") == 0 || ProgressTextBlock.Text.IndexOf("r") == 0 || (!basicSymbolClicked && sqrtClickCnt == 1 && fractionClickCnt == 0))
                     {
                         //显示过程框的内容
                         if (ProgressTextBlock.Text.IndexOfAny(basicSymbolArray) != -1)//过程框中有运算过程且有运算符号
-                            ProgressTextBlock.Text += "sqrt(" + ResultTextBlockStr + ")";
+                            ProgressTextBlock.Text += " sqrt(" + ResultTextBlockStr + ")";
                         else
                             ProgressTextBlock.Text = "sqrt(" + ProgressTextBlockStr + ")";
                     }
@@ -396,6 +399,8 @@ namespace Calculator
                     ResultTextBlock.Text = "无效输入";
                     isErrorInput = true;
                 }
+
+                fractionClickCnt = 0;
             }
         }
 
@@ -404,7 +409,6 @@ namespace Calculator
             if (!isErrorInput)
             {
                 operNumClicking = false;
-
                 fractionClickCnt++;
                 ResultTextBlockStr = ResultTextBlock.Text;
                 ProgressTextBlockStr = ProgressTextBlock.Text;
@@ -416,12 +420,17 @@ namespace Calculator
                     {
                         basicDouble = double.Parse(ResultTextBlockStr);
                         ProgressTextBlockStr = basicDouble.ToString();
+
+                        if (ProgressTextBlock.Text == "")
+                            ProgressTextBlockStr = basicDouble.ToString();
+                        else//按了1/x后按sqrt按钮
+                            ProgressTextBlockStr = ProgressTextBlock.Text;
                     }
 
                     char[] basicSymbolArray = new char[] { '+', '-', '*', '/', '%' };
 
                     //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加reciproc
-                    if (ProgressTextBlock.Text.IndexOf("r") == 0 || (!basicSymbolClicked && fractionClickCnt == 1))
+                    if (ProgressTextBlock.Text.IndexOf("r") == 0 || ProgressTextBlock.Text.IndexOf("s") == 0 || (!basicSymbolClicked && fractionClickCnt == 1 && sqrtClickCnt == 0))
                     {
                         //显示过程框的内容
                         if (ProgressTextBlock.Text.IndexOfAny(basicSymbolArray) != -1)//过程框中有运算过程且有运算符号
@@ -471,6 +480,8 @@ namespace Calculator
                     ResultTextBlock.Text = "除数不能为0";
                     isErrorInput = true;
                 }
+
+                sqrtClickCnt = 0;
             }
         }
 
@@ -555,6 +566,7 @@ namespace Calculator
                 //初始化一些变量
                 sqrtClickCnt = 0;
                 basicSymbolClicked = false;
+                fractionClickCnt = 0;
             }
         }
 
