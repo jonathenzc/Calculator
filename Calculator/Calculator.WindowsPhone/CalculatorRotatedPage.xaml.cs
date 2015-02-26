@@ -231,7 +231,7 @@ namespace Calculator
                 }
                 else
                 {
-                    if (ResultTextBlock.Text == "0")
+                    if (ResultTextBlock.Text == "0" && ProgressTextBlock.Text == "")
                         ResultTextBlock.Text = buttonContent;
                     else
                     {
@@ -300,7 +300,6 @@ namespace Calculator
         {
             ButtonNumberClickHelper("6");
         }
-
 
         private void Button7_Click(object sender, RoutedEventArgs e)
         {
@@ -451,8 +450,23 @@ namespace Calculator
                 ProgressTextBlock.Text = "";
 
                 //初始化一些变量
-                sqrtClickCnt = 0;
                 basicSymbolClicked = false;
+
+                //单元运算符辅助变量
+                fractionClickCnt = 0;
+                sqrtClickCnt = 0;
+                lnClickCnt = 0;
+                logClickCnt = 0;
+                powtenClickCnt = 0;
+                sinClickCnt = 0;
+                cosClickCnt = 0;
+                tanClickCnt = 0;
+                asindClickCnt = 0;
+                acosdClickCnt = 0;
+                atandClickCnt = 0;
+                sqrClickCnt = 0;
+                cubeClickCnt = 0;
+                cubeRootClickCnt = 0;
             }
         }
 
@@ -615,10 +629,7 @@ namespace Calculator
             operNumClicking = false;
 
             if (uniOperSymbol == "sqrt")//sqrt
-            {
                 sqrtClickCnt++;
-                fractionClickCnt = 0;
-            }
             else if (uniOperSymbol[0] == 'r')//reciproc
                 fractionClickCnt++;
             else if (uniOperSymbol[1] == 'n')//ln
@@ -653,6 +664,9 @@ namespace Calculator
         //单源运算符的判断分支助手，由过程框助手、结果框助手、其他分支助手
         private void JudgementHelper(String uniOperSymbol)
         {
+            //过程框中的文本起始字符
+            char[] startCharInProgressBlock = new char[] { 's', 'r', 'l', 'p', 'c','t','a' };
+
             if (uniOperSymbol == "sqrt")//sqrt
             {
                 if (ResultTextBlockStr[0] != '-' && ResultTextBlockStr != "无效输入")
@@ -661,10 +675,16 @@ namespace Calculator
                     if (sqrtClickCnt == 1)
                     {
                         basicDouble = double.Parse(ResultTextBlockStr);
-                        ProgressTextBlockStr = basicDouble.ToString();
+
+                        if (ProgressTextBlock.Text == "")
+                            ProgressTextBlockStr = basicDouble.ToString();
+                        else//按了一个单元运算符后按另一个运算符按钮
+                            ProgressTextBlockStr = ProgressTextBlock.Text;
                     }
                     //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加sqrt
-                    if (ProgressTextBlock.Text.IndexOf("s") == 0 || (!basicSymbolClicked && sqrtClickCnt == 1))
+                    if (ProgressTextBlock.Text.IndexOfAny(startCharInProgressBlock) == 0 || (!basicSymbolClicked && fractionClickCnt == 0 && sqrtClickCnt == 1 &&
+                        lnClickCnt == 0 && logClickCnt == 0 && powtenClickCnt == 0 && sinClickCnt == 0 && cosClickCnt == 0 && tanClickCnt == 0 && asindClickCnt == 0 &&
+                        acosdClickCnt == 0 && atandClickCnt == 0 && sqrClickCnt == 0 && cubeClickCnt == 0 && cubeRootClickCnt == 0))
                     {
                         //显示过程框内容
                         ShowProgressBlockText(uniOperSymbol);
@@ -691,10 +711,16 @@ namespace Calculator
                     if (fractionClickCnt == 1)
                     {
                         basicDouble = double.Parse(ResultTextBlockStr);
-                        ProgressTextBlockStr = basicDouble.ToString();
+
+                        if (ProgressTextBlock.Text == "")
+                            ProgressTextBlockStr = basicDouble.ToString();
+                        else//按了一个单元运算符后按另一个运算符按钮
+                            ProgressTextBlockStr = ProgressTextBlock.Text;
                     }
                     //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加reciproc
-                    if (ProgressTextBlock.Text.IndexOf("r") == 0 || (!basicSymbolClicked && fractionClickCnt == 1))
+                    if (ProgressTextBlock.Text.IndexOfAny(startCharInProgressBlock) == 0 || (!basicSymbolClicked && fractionClickCnt == 1 && sqrtClickCnt == 0 &&
+                        lnClickCnt == 0 && logClickCnt == 0 && powtenClickCnt == 0 && sinClickCnt == 0 && cosClickCnt == 0 && tanClickCnt == 0 && asindClickCnt == 0 &&
+                        acosdClickCnt == 0 && atandClickCnt == 0 && sqrClickCnt == 0 && cubeClickCnt == 0 && cubeRootClickCnt == 0))
                     {
                         //显示过程框内容
                         ShowProgressBlockText(uniOperSymbol);
@@ -720,10 +746,16 @@ namespace Calculator
                     if (lnClickCnt == 1 || logClickCnt == 1)
                     {
                         basicDouble = double.Parse(ResultTextBlockStr);
-                        ProgressTextBlockStr = basicDouble.ToString();
+
+                        if (ProgressTextBlock.Text == "")
+                            ProgressTextBlockStr = basicDouble.ToString();
+                        else//按了一个单元运算符后按另一个运算符按钮
+                            ProgressTextBlockStr = ProgressTextBlock.Text;
                     }
                     //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加ln或log
-                    if (ProgressTextBlock.Text.IndexOf("l") == 0 || (!basicSymbolClicked && (lnClickCnt == 1 || logClickCnt == 1)))
+                    if (ProgressTextBlock.Text.IndexOfAny(startCharInProgressBlock) == 0 || (!basicSymbolClicked && (lnClickCnt==1 && logClickCnt==0 || logClickCnt == 1 && lnClickCnt == 0) &&
+                        fractionClickCnt == 0 && sqrtClickCnt == 0 && powtenClickCnt == 0 && sinClickCnt == 0 && cosClickCnt == 0 && tanClickCnt == 0 && asindClickCnt == 0 &&
+                        acosdClickCnt == 0 && atandClickCnt == 0 && sqrClickCnt == 0 && cubeClickCnt == 0 && cubeRootClickCnt == 0))
                     {
                         //显示过程框内容
                         ShowProgressBlockText(uniOperSymbol);
@@ -749,10 +781,16 @@ namespace Calculator
                     if (powtenClickCnt == 1)
                     {
                         basicDouble = double.Parse(ResultTextBlockStr);
-                        ProgressTextBlockStr = basicDouble.ToString();
+
+                        if (ProgressTextBlock.Text == "")
+                            ProgressTextBlockStr = basicDouble.ToString();
+                        else//按了一个单元运算符后按另一个运算符按钮
+                            ProgressTextBlockStr = ProgressTextBlock.Text;
                     }
                     //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加powten
-                    if (ProgressTextBlock.Text.IndexOf("p") == 0 || (!basicSymbolClicked && powtenClickCnt == 1))
+                    if (ProgressTextBlock.Text.IndexOfAny(startCharInProgressBlock) == 0 || (!basicSymbolClicked && fractionClickCnt == 0 && sqrtClickCnt == 0 &&
+                        lnClickCnt == 0 && logClickCnt == 0 && powtenClickCnt == 1 && sinClickCnt == 0 && cosClickCnt == 0 && tanClickCnt == 0 && asindClickCnt == 0 &&
+                        acosdClickCnt == 0 && atandClickCnt == 0 && sqrClickCnt == 0 && cubeClickCnt == 0 && cubeRootClickCnt == 0))
                     {
                         //显示过程框内容
                         ShowProgressBlockText(uniOperSymbol);
@@ -776,10 +814,16 @@ namespace Calculator
                 if (sinClickCnt == 1)
                 {
                     basicDouble = double.Parse(ResultTextBlockStr);
-                    ProgressTextBlockStr = basicDouble.ToString();
+
+                    if (ProgressTextBlock.Text == "")
+                        ProgressTextBlockStr = basicDouble.ToString();
+                    else//按了一个单元运算符后按另一个运算符按钮
+                        ProgressTextBlockStr = ProgressTextBlock.Text;
                 }
                 //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加sind
-                if (ProgressTextBlock.Text.IndexOf("s") == 0 || (!basicSymbolClicked && sinClickCnt == 1))
+                if (ProgressTextBlock.Text.IndexOfAny(startCharInProgressBlock) == 0 || (!basicSymbolClicked && fractionClickCnt == 0 && sqrtClickCnt == 0 &&
+                        lnClickCnt == 0 && logClickCnt == 0 && powtenClickCnt == 0 && sinClickCnt == 1 && cosClickCnt == 0 && tanClickCnt == 0 && asindClickCnt == 0 &&
+                        acosdClickCnt == 0 && atandClickCnt == 0 && sqrClickCnt == 0 && cubeClickCnt == 0 && cubeRootClickCnt == 0))
                 {
                     //显示过程框内容
                     ShowProgressBlockText(uniOperSymbol);
@@ -796,10 +840,16 @@ namespace Calculator
                 if (cosClickCnt == 1)
                 {
                     basicDouble = double.Parse(ResultTextBlockStr);
-                    ProgressTextBlockStr = basicDouble.ToString();
+
+                    if (ProgressTextBlock.Text == "")
+                        ProgressTextBlockStr = basicDouble.ToString();
+                    else//按了一个单元运算符后按另一个运算符按钮
+                        ProgressTextBlockStr = ProgressTextBlock.Text;
                 }
                 //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加cosd
-                if (ProgressTextBlock.Text.IndexOf("c") == 0 || (!basicSymbolClicked && cosClickCnt == 1))
+                if (ProgressTextBlock.Text.IndexOfAny(startCharInProgressBlock) == 0 || (!basicSymbolClicked && fractionClickCnt == 0 && sqrtClickCnt == 0 &&
+                        lnClickCnt == 0 && logClickCnt == 0 && powtenClickCnt == 0 && sinClickCnt == 0 && cosClickCnt == 1 && tanClickCnt == 0 && asindClickCnt == 0 &&
+                        acosdClickCnt == 0 && atandClickCnt == 0 && sqrClickCnt == 0 && cubeClickCnt == 0 && cubeRootClickCnt == 0))
                 {
                     //显示过程框内容
                     ShowProgressBlockText(uniOperSymbol);
@@ -818,10 +868,16 @@ namespace Calculator
                     if (tanClickCnt == 1)
                     {
                         basicDouble = double.Parse(ResultTextBlockStr);
-                        ProgressTextBlockStr = basicDouble.ToString();
+
+                        if (ProgressTextBlock.Text == "")
+                            ProgressTextBlockStr = basicDouble.ToString();
+                        else//按了一个单元运算符后按另一个运算符按钮
+                            ProgressTextBlockStr = ProgressTextBlock.Text;
                     }
                     //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加tand
-                    if (ProgressTextBlock.Text.IndexOf("t") == 0 || (!basicSymbolClicked && tanClickCnt == 1))
+                    if (ProgressTextBlock.Text.IndexOfAny(startCharInProgressBlock) == 0 || (!basicSymbolClicked && fractionClickCnt == 0 && sqrtClickCnt == 0 &&
+                        lnClickCnt == 0 && logClickCnt == 0 && powtenClickCnt == 0 && sinClickCnt == 0 && cosClickCnt == 0 && tanClickCnt == 1 && asindClickCnt == 0 &&
+                        acosdClickCnt == 0 && atandClickCnt == 0 && sqrClickCnt == 0 && cubeClickCnt == 0 && cubeRootClickCnt == 0))
                     {
                         //显示过程框内容
                         ShowProgressBlockText(uniOperSymbol);
@@ -847,10 +903,16 @@ namespace Calculator
                     if (asindClickCnt == 1 || acosdClickCnt == 1)
                     {
                         basicDouble = double.Parse(ResultTextBlockStr);
-                        ProgressTextBlockStr = basicDouble.ToString();
+
+                        if (ProgressTextBlock.Text == "")
+                            ProgressTextBlockStr = basicDouble.ToString();
+                        else//按了一个单元运算符后按另一个运算符按钮
+                            ProgressTextBlockStr = ProgressTextBlock.Text;
                     }
                     //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加asind或者acosd
-                    if (ProgressTextBlock.Text.IndexOf("a") == 0 || (!basicSymbolClicked && (asindClickCnt == 1 || acosdClickCnt == 1)))
+                    if (ProgressTextBlock.Text.IndexOfAny(startCharInProgressBlock) == 0 || (!basicSymbolClicked && (asindClickCnt == 1 && acosdClickCnt == 0 || acosdClickCnt == 1 && asindClickCnt == 0) && 
+                        fractionClickCnt == 0 && sqrtClickCnt == 0 && lnClickCnt == 0 && logClickCnt == 0 && powtenClickCnt == 0 && sinClickCnt == 0 && cosClickCnt == 0 && 
+                        tanClickCnt == 0  && atandClickCnt == 0 && sqrClickCnt == 0 && cubeClickCnt == 0 && cubeRootClickCnt == 0))
                     {
                         //显示过程框内容
                         ShowProgressBlockText(uniOperSymbol);
@@ -874,10 +936,16 @@ namespace Calculator
                 if (atandClickCnt == 1)
                 {
                     basicDouble = double.Parse(ResultTextBlockStr);
-                    ProgressTextBlockStr = basicDouble.ToString();
+
+                    if (ProgressTextBlock.Text == "")
+                        ProgressTextBlockStr = basicDouble.ToString();
+                    else//按了一个单元运算符后按另一个运算符按钮
+                        ProgressTextBlockStr = ProgressTextBlock.Text;
                 }
                 //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加atand
-                if (ProgressTextBlock.Text.IndexOf("a") == 0 || (!basicSymbolClicked && atandClickCnt == 1))
+                if (ProgressTextBlock.Text.IndexOfAny(startCharInProgressBlock) == 0 || (!basicSymbolClicked && fractionClickCnt == 0 && sqrtClickCnt == 0 &&
+                        lnClickCnt == 0 && logClickCnt == 0 && powtenClickCnt == 0 && sinClickCnt == 0 && cosClickCnt == 0 && tanClickCnt == 0 && asindClickCnt == 0 &&
+                        acosdClickCnt == 0 && atandClickCnt == 1 && sqrClickCnt == 0 && cubeClickCnt == 0 && cubeRootClickCnt == 0))
                 {
                     //显示过程框内容
                     ShowProgressBlockText(uniOperSymbol);
@@ -894,10 +962,16 @@ namespace Calculator
                 if (sqrClickCnt == 1)
                 {
                     basicDouble = double.Parse(ResultTextBlockStr);
-                    ProgressTextBlockStr = basicDouble.ToString();
+
+                    if (ProgressTextBlock.Text == "")
+                        ProgressTextBlockStr = basicDouble.ToString();
+                    else//按了一个单元运算符后按另一个运算符按钮
+                        ProgressTextBlockStr = ProgressTextBlock.Text;
                 }
                 //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加sqr
-                if (ProgressTextBlock.Text.IndexOf("s") == 0 || (!basicSymbolClicked && sqrClickCnt == 1))
+                if (ProgressTextBlock.Text.IndexOfAny(startCharInProgressBlock) == 0 || (!basicSymbolClicked && fractionClickCnt == 0 && sqrtClickCnt == 0 &&
+                        lnClickCnt == 0 && logClickCnt == 0 && powtenClickCnt == 0 && sinClickCnt == 0 && cosClickCnt == 0 && tanClickCnt == 0 && asindClickCnt == 0 &&
+                        acosdClickCnt == 0 && atandClickCnt == 0 && sqrClickCnt == 1 && cubeClickCnt == 0 && cubeRootClickCnt == 0))
                 {
                     //显示过程框内容
                     ShowProgressBlockText(uniOperSymbol);
@@ -914,10 +988,16 @@ namespace Calculator
                 if (cubeClickCnt == 1)
                 {
                     basicDouble = double.Parse(ResultTextBlockStr);
-                    ProgressTextBlockStr = basicDouble.ToString();
+
+                    if (ProgressTextBlock.Text == "")
+                        ProgressTextBlockStr = basicDouble.ToString();
+                    else//按了一个单元运算符后按另一个运算符按钮
+                        ProgressTextBlockStr = ProgressTextBlock.Text;
                 }
                 //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加cube
-                if (ProgressTextBlock.Text.IndexOf("c") == 0 || (!basicSymbolClicked && cubeClickCnt == 1))
+                if (ProgressTextBlock.Text.IndexOfAny(startCharInProgressBlock) == 0 || (!basicSymbolClicked && fractionClickCnt == 0 && sqrtClickCnt == 0 &&
+                        lnClickCnt == 0 && logClickCnt == 0 && powtenClickCnt == 0 && sinClickCnt == 0 && cosClickCnt == 0 && tanClickCnt == 0 && asindClickCnt == 0 &&
+                        acosdClickCnt == 0 && atandClickCnt == 0 && sqrClickCnt == 0 && cubeClickCnt == 1 && cubeRootClickCnt == 0))
                 {
                     //显示过程框内容
                     ShowProgressBlockText(uniOperSymbol);
@@ -934,10 +1014,16 @@ namespace Calculator
                 if (cubeRootClickCnt == 1)
                 {
                     basicDouble = double.Parse(ResultTextBlockStr);
-                    ProgressTextBlockStr = basicDouble.ToString();
+
+                    if (ProgressTextBlock.Text == "")
+                        ProgressTextBlockStr = basicDouble.ToString();
+                    else//按了一个单元运算符后按另一个运算符按钮
+                        ProgressTextBlockStr = ProgressTextBlock.Text;
                 }
                 //加减乘除Mod基本运算按钮还没有按，只用处理在字符串前面加cuberoot
-                if (ProgressTextBlock.Text.IndexOf("c") == 0 || (!basicSymbolClicked && cubeRootClickCnt == 1))
+                if (ProgressTextBlock.Text.IndexOfAny(startCharInProgressBlock) == 0 || (!basicSymbolClicked && fractionClickCnt == 0 && sqrtClickCnt == 0 &&
+                        lnClickCnt == 0 && logClickCnt == 0 && powtenClickCnt == 0 && sinClickCnt == 0 && cosClickCnt == 0 && tanClickCnt == 0 && asindClickCnt == 0 &&
+                        acosdClickCnt == 0 && atandClickCnt == 0 && sqrClickCnt == 0 && cubeClickCnt == 0 && cubeRootClickCnt == 1))
                 {
                     //显示过程框内容
                     ShowProgressBlockText(uniOperSymbol);
@@ -1039,6 +1125,55 @@ namespace Calculator
             }
 
             basicSymbolClicked = false;
+
+            //将辅助变量清零
+            clearUniOperSymbolCnt(uniOperSymbol);
+        }
+
+        //重置单元运算符的计数变量
+        private void clearUniOperSymbolCnt(string uniOperSymbol)
+        {
+            if (uniOperSymbol != "reciproc")
+                fractionClickCnt = 0;
+
+            if (uniOperSymbol != "sqrt")
+                sqrtClickCnt = 0;
+
+            if (uniOperSymbol != "ln")
+                lnClickCnt = 0;
+
+            if (uniOperSymbol != "log")
+                logClickCnt = 0;
+
+            if (uniOperSymbol != "powten")
+                powtenClickCnt = 0;
+
+            if (uniOperSymbol != "sind")
+                sinClickCnt = 0;
+
+            if (uniOperSymbol != "cosd")
+                cosClickCnt = 0;
+
+            if (uniOperSymbol != "tand")
+                tanClickCnt = 0;
+
+            if (uniOperSymbol != "asind")
+                asindClickCnt = 0;
+
+            if (uniOperSymbol != "acosd")
+                acosdClickCnt = 0;
+
+            if (uniOperSymbol != "atand")
+                atandClickCnt = 0;
+
+            if (uniOperSymbol != "sqr")
+                sqrClickCnt = 0;
+
+            if (uniOperSymbol != "cube")
+                cubeClickCnt = 0;
+
+            if (uniOperSymbol != "cuberoot")
+                cubeRootClickCnt = 0;
         }
 
         //单源运算符的判断其他分支助手
