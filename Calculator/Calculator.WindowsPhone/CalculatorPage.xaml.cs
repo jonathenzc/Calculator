@@ -147,7 +147,7 @@ namespace Calculator
                 }
                 else
                 {
-                    if (ResultTextBlock.Text == "0")
+                    if (ResultTextBlock.Text == "0" && ProgressTextBlock.Text == "")
                         ResultTextBlock.Text = buttonContent;
                     else
                     {
