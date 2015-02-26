@@ -6,7 +6,7 @@
     
     <!--设计按钮样式-->
     <Application.Resources>
-        <!--操作数按钮样式-->
+        <!--操作符按钮样式-->
         <Style TargetType="Button" x:Key="OperSymbolButton">
             <Setter Property="Height" Value="Auto"></Setter>
             <Setter Property="Width" Value="Auto"></Setter>
@@ -19,7 +19,7 @@
             <Setter Property="FontSize" Value="20"></Setter>
         </Style>
 
-        <!--操作符按钮样式-->
+        <!--操作数按钮样式-->
         <Style TargetType="Button" x:Key="OperNumButton">
             <Setter Property="Height" Value="Auto"></Setter>
             <Setter Property="Width" Value="Auto"></Setter>
@@ -29,7 +29,7 @@
             <Setter Property="MinHeight" Value="10"></Setter>
             <Setter Property="MinWidth" Value="10"></Setter>
             <Setter Property="Background" Value="{ThemeResource PhoneChromeBrush}"></Setter>
-            <Setter Property="FontSize" Value="25"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
         </Style>
     </Application.Resources>
 </Application>

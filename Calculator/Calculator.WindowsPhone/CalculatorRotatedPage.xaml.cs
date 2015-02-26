@@ -108,6 +108,7 @@ namespace Calculator
             
             //单元运算符辅助变量
             fractionClickCnt = 0;
+            sqrtClickCnt = 0;
             lnClickCnt = 0;
             logClickCnt = 0;
             powtenClickCnt = 0;
@@ -192,12 +193,12 @@ namespace Calculator
             ProgressTextBlockStr = "";
             itsFraction = 0;
             ResultTextBlock.FontSize = 60;//在进行分数计算时，如果数为0时，不能计算。此时的FontSize位60，这里重新将其设置为初始值
-            sqrtClickCnt = 0;
             itsSqrt = 0;
             operSymbol = "";
 
             //单元运算符辅助变量
             fractionClickCnt = 0;
+            sqrtClickCnt = 0;
             lnClickCnt = 0;
             logClickCnt = 0;
             powtenClickCnt = 0;
@@ -220,8 +221,6 @@ namespace Calculator
             if (!isErrorInput)
             {
                 operNumClicking = true;
-                sqrtClickCnt = 0;
-                fractionClickCnt = 0;
 
                 //运算符已经按过,之后继续按数字键
                 if (basicSymbolClicked || equalClicked)
@@ -232,11 +231,38 @@ namespace Calculator
                 }
                 else
                 {
-                    if (ResultTextBlock.Text != "0")
-                        ResultTextBlock.Text += buttonContent;
-                    else
+                    if (ResultTextBlock.Text == "0")
                         ResultTextBlock.Text = buttonContent;
+                    else
+                    {
+                        //按了单元运算符(如：根号分号)后，按了数字键
+                        if (sqrtClickCnt!=0 || fractionClickCnt!=0 || lnClickCnt!=0 || logClickCnt!=0 || powtenClickCnt!=0 ||
+                            sinClickCnt!=0 || cosClickCnt!=0 || tanClickCnt!=0 || asindClickCnt!=0 || acosdClickCnt!=0 || 
+                            atandClickCnt!=0 || sqrClickCnt!=0 || cubeClickCnt!=0 || cubeRootClickCnt!=0)
+                        {
+                            ResultTextBlock.Text = buttonContent;
+                            ProgressTextBlock.Text = "";
+                        }
+                        else
+                            ResultTextBlock.Text += buttonContent;
+                    }
                 }
+
+                //单元运算符辅助变量
+                fractionClickCnt = 0;
+                sqrtClickCnt = 0;
+                lnClickCnt = 0;
+                logClickCnt = 0;
+                powtenClickCnt = 0;
+                sinClickCnt = 0;
+                cosClickCnt = 0;
+                tanClickCnt = 0;
+                asindClickCnt = 0;
+                acosdClickCnt = 0;
+                atandClickCnt = 0;
+                sqrClickCnt = 0;
+                cubeClickCnt = 0;
+                cubeRootClickCnt = 0;
             }
         }
 
@@ -603,7 +629,7 @@ namespace Calculator
                 powtenClickCnt++;
             else if (uniOperSymbol[1] == 'i')//sin
                 sinClickCnt++;
-            else if (uniOperSymbol == "cos")//cos
+            else if (uniOperSymbol == "cosd")//cos
                 cosClickCnt++;
             else if (uniOperSymbol[0] == 't')//tan
                 tanClickCnt++;
@@ -764,7 +790,7 @@ namespace Calculator
                 //显示结果框内容
                 ShowResultBlockText(uniOperSymbol);
             }
-            else if (uniOperSymbol == "cos")//cos
+            else if (uniOperSymbol == "cosd")//cos
             {
                 //第一次按sin按钮得到该数的分数
                 if (cosClickCnt == 1)
@@ -971,7 +997,7 @@ namespace Calculator
                 basicDouble = double.Parse(ResultTextBlockStr);
                 ResultTextBlock.Text = Math.Round(Math.Sin(Math.PI*(basicDouble/180.0)),9).ToString();
             }
-            else if (uniOperSymbol == "cos")//cos
+            else if (uniOperSymbol == "cosd")//cos
             {
                 basicDouble = double.Parse(ResultTextBlockStr);
                 ResultTextBlock.Text = Math.Round(Math.Cos(Math.PI * (basicDouble / 180.0)), 9).ToString();

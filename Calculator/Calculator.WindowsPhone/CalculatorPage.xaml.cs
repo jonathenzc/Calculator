@@ -137,8 +137,6 @@ namespace Calculator
             if (!isErrorInput)
             {
                 operNumClicking = true;
-                sqrtClickCnt = 0;
-                fractionClickCnt = 0;
 
                 //运算符已经按过,之后继续按数字键
                 if (basicSymbolClicked || equalClicked)
@@ -149,11 +147,23 @@ namespace Calculator
                 }
                 else
                 {
-                    if (ResultTextBlock.Text != "0")
-                        ResultTextBlock.Text += buttonContent;
-                    else
+                    if (ResultTextBlock.Text == "0")
                         ResultTextBlock.Text = buttonContent;
+                    else
+                    {
+                        //按了根号或者分号后，按了数字键
+                        if (sqrtClickCnt != 0 || fractionClickCnt != 0)
+                        {
+                            ResultTextBlock.Text = buttonContent;
+                            ProgressTextBlock.Text = "";
+                        }
+                        else
+                            ResultTextBlock.Text += buttonContent;
+                    }
                 }
+
+                sqrtClickCnt = 0;
+                fractionClickCnt = 0;
             }
         }
 
